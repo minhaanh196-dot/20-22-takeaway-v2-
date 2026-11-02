@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>20/22 Takeaway — Matcha • Coffee • Milktea</title>
+  <meta name="description" content="20/22 Takeaway – Matcha • Coffee • Milktea. Bộ sưu tập Best Seller: Trà sữa Thái đỏ 22k, Trà bưởi hoa đào 20k, Houjicha sữa hạt 22k, Matcha Latte 20k. Có mặt tại CS5 LHU." />
+  <meta name="theme-color" content="#1E5E3A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============ LOADER ============ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__brand rv-loader">
+    <span class="loader__logo">20/22</span>
+    <span class="loader__sub">Matcha • Coffee • Milktea</span>
+  </div>
+  <div class="loader__track"><span class="loader__fill"></span></div>
+</div>
+
+<!-- ============ MENU OVERLAY ============ -->
+<div class="menu" id="menu" aria-hidden="true">
+  <div class="menu__backdrop" data-close-menu></div>
+  <div class="menu__panel">
+    <div class="menu__top">
+      <a class="brand" href="#top" data-close-menu>20/22</a>
+      <button class="icon-btn icon-btn--light" data-close-menu aria-label="Đóng menu">
+        <svg viewBox="0 0 24 24" class="x-icon"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <nav class="menu__nav">
+      <a href="#bestseller" data-link>Best Seller</a>
+      <a href="#menu-list" data-link>Thực đơn</a>
+      <a href="#collection" data-link>Bộ thiết kế</a>
+      <a href="#contact" data-link>Liên hệ</a>
+      <a href="#presentation" data-presentation-open>Trình chiếu báo cáo ↗</a>
+    </nav>
+    <div class="menu__bottom">
+      <button class="pill pill--light" data-open-modal data-close-menu>Đặt món ngay <i class="arr"></i></button>
+      <a class="menu__phone" href="tel:0937162643">0937 162 643</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ORDER MODAL ============ -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal__backdrop" data-close-modal></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal__head">
+      <div>
+        <span class="eyebrow">Đặt món</span>
+        <h2 id="modal-title" class="modal__title"><span>Chọn vị,</span><span>lấy liền!</span></h2>
+      </div>
+      <button class="icon-btn" data-close-modal aria-label="Đóng">
+        <svg viewBox="0 0 24 24" class="x-icon"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form id="order-form" novalidate>
+      <label>Họ và tên
+        <input type="text" name="name" placeholder="Nguyễn Văn A" autocomplete="name" />
+      </label>
+      <label>Số điện thoại
+        <input type="tel" name="phone" placeholder="09xx xxx xxx" autocomplete="tel" />
+      </label>
+      <label>Bạn muốn uống gì?
+        <select name="drink" id="drink-select">
+          <option>Trà sữa Thái đỏ — 22k</option>
+          <option>Trà bưởi hoa đào — 20k</option>
+          <option>Houjicha sữa hạt — 22k</option>
+          <option>Matcha Latte — 20k</option>
+        </select>
+      </label>
+      <label>Ghi chú
+        <textarea name="note" rows="2" placeholder="Ít đá, ít ngọt… Lấy tại CS5 LHU nhé!"></textarea>
+      </label>
+      <button type="submit" class="pill pill--solid" id="order-submit">Gửi đơn</button>
+    </form>
+    <div class="modal__success" id="order-success" hidden>
+      <span class="check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></span>
+      <h3>Đã nhận đơn!</h3>
+      <p id="success-text">Cảm ơn bạn — 20/22 sẽ liên hệ xác nhận sớm nhé.</p>
+      <button class="pill pill--solid" data-close-modal>Xong</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close icon-btn icon-btn--light" data-close-lightbox aria-label="Đóng"><svg viewBox="0 0 24 24" class="x-icon"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="lightbox__nav lightbox__nav--prev" data-lb="-1" aria-label="Ảnh trước"><i class="arr arr--flip"></i></button>
+  <figure class="lightbox__fig">
+    <img id="lb-img" alt="" />
+    <figcaption id="lb-cap"></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" data-lb="1" aria-label="Ảnh sau"><i class="arr"></i></button>
+</div>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="hero__plate"><div class="hero__plate-inner" data-parallax-y="0,12">
+      <div class="hero__checker"></div>
+      <div class="hero__brush hero__brush--a"></div>
+      <div class="hero__brush hero__brush--b"></div>
+    </div><div class="hero__shade"></div></div>
+
+    <header class="header">
+      <nav class="header__nav">
+        <a href="#bestseller" data-link>Best Seller</a>
+        <a href="#collection" data-link>Bộ thiết kế</a>
+      </nav>
+      <a href="#top" class="brand brand--center" data-link>
+        <svg viewBox="0 0 24 24" class="brand__mark"><path d="M5 19c8 0 14-5 14-14-9 0-14 6-14 14z"/><path d="M5 19c3-5 6-8 10-10"/></svg>
+        <span>20/22</span>
+      </a>
+      <div class="header__right">
+        <button class="link-btn presentation-launch" data-presentation-open>Trình chiếu</button>
+        <button class="link-btn" data-open-modal>Đặt món</button>
+        <button class="burger" id="burger" aria-label="Mở menu"><i></i><i></i></button>
+      </div>
+    </header>
+
+    <div class="hero__title-wrap">
+      <h1 class="hero__title split gated" data-split="words" id="hero-title">20/22</h1>
+      <p class="hero__chip gated rv" data-delay="500">Matcha • Coffee • Milktea</p>
+    </div>
+
+    <div class="hero__bottom">
+      <p class="hero__tagline split gated" data-split="lines" data-base="350" data-stagger="110">Thơm ngon đúng vị|Giá trị xứng tầm</p>
+
+      <div class="hero__cluster">
+        <div class="hero__slider gated rv" data-delay="650" id="hero-slider">
+          <div class="mini" id="mini-card">
+            <img id="mini-img" src="assets/images/post-tra-sua-thai-do.png" alt="" />
+            <div class="mini__txt">
+              <b id="mini-brand">Trà sữa Thái đỏ</b>
+              <span id="mini-title">22k</span>
+              <a href="#bestseller" data-link id="mini-cta">Xem món →</a>
+            </div>
+          </div>
+          <div class="dots dots--light" id="hero-dots"></div>
+        </div>
+
+        <article class="member gated rv" data-delay="780">
+          <div class="member__l">
+            <strong>4</strong>
+            <div class="avatars"><i style="background:#4D8B55"></i><i style="background:#c2e029"></i><i style="background:#5C3A21"></i><i style="background:#F3EEE1"></i></div>
+            <small>Món Best Seller</small>
+          </div>
+          <img src="assets/images/post-xe-day.png" alt="Xe đẩy 20/22 với dù xanh-vàng" />
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEST SELLER CAROUSEL ============ -->
+  <section class="trust" id="bestseller">
+    <div class="trust__badges">
+      <div class="badge-round rv" data-from="scale"><b>20k</b><span>Giá từ chỉ 20.000đ</span></div>
+      <article class="badge-card rv" data-delay="120">
+        <span class="chip">#01</span>
+        <div>
+          <h3>Best Seller Collection</h3>
+          <p>4 món được yêu thích nhất tại 20/22 — pha mới mỗi ngày, ly đầy đặn, giá dễ thương cho mọi bạn học sinh, sinh viên.</p>
+        </div>
+      </article>
+    </div>
+
+    <h2 class="ghost" id="bs-title" aria-live="polite">
+      <div class="ghost__row"><span class="gw" data-px="-3,3"><i></i></span><span class="gw" data-px="3,-3"><i></i></span></div>
+      <div class="ghost__row"><span class="gw gw--ink" data-px="-2,4"><i></i></span><span class="gw" data-px="4,-3"><i></i></span></div>
+    </h2>
+
+    <figure class="coach rv" data-from="rise-big">
+      <img id="bs-img" src="" alt="" />
+      <figcaption>
+        <b id="bs-name"></b>
+        <span id="bs-desc"></span>
+      </figcaption>
+      <span class="coach__price" id="bs-price"></span>
+    </figure>
+
+    <div class="trust__controls">
+      <button class="arrow-btn arrow-btn--outline" id="bs-prev" aria-label="Món trước"><i class="arr arr--flip"></i></button>
+      <div class="dots dots--dark" id="bs-dots"></div>
+      <button class="arrow-btn arrow-btn--solid" id="bs-next" aria-label="Món sau"><i class="arr"></i></button>
+    </div>
+  </section>
+
+  <!-- ============ MENU LIST ============ -->
+  <section class="programs" id="menu-list">
+    <span class="eyebrow">Thực đơn Best Seller</span>
+    <h2 class="h2 split" data-split="lines" style="margin-top:1rem">Chọn vị|bạn thích</h2>
+    <ul class="rows" id="rows"></ul>
+  </section>
+
+  <!-- ============ COLLECTION GALLERY ============ -->
+  <section class="facilities" id="collection">
+    <div class="fac__head">
+      <div class="fac__intro">
+        <img class="fac__icon rv" data-from="scale" src="assets/images/post-xe-day.png" alt="Xe đẩy 20/22" />
+        <h2 class="h2 split" data-split="lines" data-stagger="120" style="margin-top:1.5rem">Toàn bộ|bộ thiết kế|20/22</h2>
+        <p class="fac__body split-words" data-delay="250">Banner standee, poster, bài đăng mạng xã hội, bảng màu thương hiệu và mockup thực tế tại xe đẩy — tất cả nằm gọn trong một bộ nhận diện thống nhất. Bấm vào ảnh để xem lớn.</p>
+      </div>
+      <div class="filters" id="filters" role="tablist"></div>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <!-- ============ MOCKUP FEATURE ============ -->
+  <section class="mock">
+    <span class="eyebrow eyebrow--light">Ngoài đời thực</span>
+    <h2 class="h2 h2--light split" data-split="lines" style="margin-top:1rem">Standee đứng|cạnh xe đẩy</h2>
+    <div class="mock__grid">
+      <figure class="mock__item rv" data-delay="0"><img data-src="mockup-standee-xe-day-1.jpg" alt="Mockup standee Best Seller bên cạnh xe đẩy 20/22" /><figcaption>Mockup 01</figcaption></figure>
+      <figure class="mock__item rv" data-delay="140"><img data-src="mockup-standee-xe-day-2.jpg" alt="Mockup standee Best Seller bên cạnh xe đẩy 20/22 – góc 2" /><figcaption>Mockup 02</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ============ BRAND ============ -->
+  <section class="brand-sec" id="brand">
+    <span class="eyebrow">Nhận diện thương hiệu</span>
+    <h2 class="h2 split" data-split="lines" style="margin-top:1rem">Bảng màu|&amp; phông chữ</h2>
+    <div class="palette">
+      <div class="sw sw--wide rv" style="background:#F3EEE1;color:#222;border:2px solid #1E5E3A"><b>Kem Tươi</b><small>#F3EEE1</small><small>RGB 243, 238, 225</small><small>CMYK 0, 2, 7, 5</small></div>
+      <div class="sw rv" data-delay="80" style="background:#F7F4E9;color:#222;border:2px solid #1E5E3A"><b>Màu Be</b><small>#F7F4E9</small><small>RGB 247, 244, 233</small><small>CMYK 0, 1, 6, 3</small></div>
+      <div class="sw rv" data-delay="160" style="background:#1E5E3A;color:#fff"><b>Xanh Matcha</b><small>#1E5E3A</small><small>RGB 30, 94, 58</small><small>CMYK 68, 0, 38, 63</small></div>
+      <div class="sw rv" data-delay="240" style="background:#4D8B55;color:#fff"><b>Xanh Lá Trà</b><small>#4D8B55</small><small>RGB 77, 139, 85</small><small>CMYK 45, 0, 39, 45</small></div>
+      <div class="sw rv" data-delay="320" style="background:#222222;color:#fff"><b>Đen Nhám</b><small>#222222</small><small>RGB 34, 34, 34</small><small>CMYK 0, 0, 0, 87</small></div>
+      <div class="sw rv" data-delay="400" style="background:#5C3A21;color:#fff"><b>Nâu Cà Phê</b><small>#5C3A21</small><small>RGB 92, 58, 33</small><small>CMYK 0, 37, 64, 64</small></div>
+    </div>
+    <div class="font-demo rv">
+      <h3>BALOO</h3>
+      <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+    </div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="stats">
+    <span class="eyebrow eyebrow--light">Con số 20/22</span>
+    <h2 class="h2 h2--light split" data-split="lines" style="margin-top:1rem">Ly nào cũng|đáng tiền</h2>
+    <dl class="stats__grid">
+      <div class="stat rv" data-delay="0"><dd>4</dd><dt>Món Best Seller</dt></div>
+      <div class="stat rv" data-delay="110"><dd>20k</dd><dt>Giá thấp nhất</dt></div>
+      <div class="stat rv" data-delay="220"><dd>22k</dd><dt>Giá cao nhất</dt></div>
+      <div class="stat rv" data-delay="330"><dd>3</dd><dt>Dòng: Matcha • Coffee • Milktea</dt></div>
+    </dl>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="contact">
+    <div class="footer__cta">
+      <div>
+        <span class="eyebrow eyebrow--light">Mua ngay</span>
+        <p class="footer__big split" data-split="lines">Khát chưa?|Ghé 20/22!</p>
+      </div>
+      <button class="pill pill--light rv" data-delay="150" data-open-modal>Đặt món <i class="arr"></i></button>
+    </div>
+    <div class="footer__cols">
+      <div class="footer__brand">
+        <a class="brand" href="#top" data-link>20/22</a>
+        <p>Xe đẩy takeaway Matcha • Coffee • Milktea — thơm ngon đúng vị, giá trị xứng tầm.</p>
+        <address>
+          <a href="tel:0937162643">0937 162 643</a><br />
+          <span>Có mặt tại CS5 LHU nhé!</span>
+        </address>
+      </div>
+      <nav><h4>Thực đơn</h4><ul>
+        <li><a href="#menu-list" data-link>Trà sữa Thái đỏ</a></li>
+        <li><a href="#menu-list" data-link>Trà bưởi hoa đào</a></li>
+        <li><a href="#menu-list" data-link>Houjicha sữa hạt</a></li>
+        <li><a href="#menu-list" data-link>Matcha Latte</a></li>
+      </ul></nav>
+      <nav><h4>Khám phá</h4><ul>
+        <li><a href="#bestseller" data-link>Best Seller</a></li>
+        <li><a href="#collection" data-link>Bộ thiết kế</a></li>
+        <li><a href="#brand" data-link>Nhận diện</a></li>
+      </ul></nav>
+      <nav><h4>Liên hệ</h4><ul>
+        <li><a href="tel:0937162643">Gọi 0937 162 643</a></li>
+        <li><a href="#" data-open-modal>Đặt món online</a></li>
+      </ul></nav>
+    </div>
+    <div class="footer__bar">
+      <span>© 2026 20/22 Takeaway. All rights reserved.</span>
+      <span>Matcha • Coffee • Milktea</span>
+    </div>
+  </footer>
+</main>
+
+<!-- ============ PRESENTATION MODE ============ -->
+<section class="presentation" id="presentation" aria-hidden="true" aria-label="Chế độ trình chiếu báo cáo">
+  <div class="presentation__shell">
+    <header class="pres-topbar">
+      <div class="pres-brand" aria-label="20/22 Takeaway">20/22 <span>TAKEAWAY</span></div>
+      <div class="pres-current"><span id="presentation-current-title">Báo cáo thiết kế quảng cáo</span></div>
+      <div class="pres-actions">
+        <button type="button" class="pres-tool" id="presentation-toc">Mục lục <span>⌘</span></button>
+        <button type="button" class="pres-tool" id="presentation-fullscreen">Toàn màn hình <span>F</span></button>
+        <button type="button" class="pres-close" id="presentation-close" aria-label="Thoát trình chiếu">Thoát <b>×</b></button>
+      </div>
+    </header>
+    <div class="pres-progress"><span id="presentation-progress"></span></div>
+    <div class="pres-stage" id="presentation-stage"></div>
+    <footer class="pres-bottombar">
+      <span class="pres-keyhelp">← → chuyển trang <i>•</i> M mục lục <i>•</i> F toàn màn hình <i>•</i> Esc thoát</span>
+      <div class="pres-pagination">
+        <button type="button" id="presentation-prev" aria-label="Trang trước">←</button>
+        <strong id="presentation-counter">01 / 18</strong>
+        <button type="button" id="presentation-next" aria-label="Trang tiếp theo">→</button>
+      </div>
+    </footer>
+    <nav class="pres-toc-panel" id="presentation-toc-panel" aria-label="Mục lục trình chiếu"></nav>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
