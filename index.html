@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20/22 Takeaway | Đồ Án Truyền Thông Đa Phương Tiện</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="importmap">
+    { "imports": { "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.19/dist/lenis.mjs" } }
+    </script>
+    <style>
+        :root {
+            --background: #08080a;
+            --foreground: #f3f1ea;
+            --surface: #111114;
+            --surface-2: #17171b;
+            --muted: #807f78;
+            --line: rgba(243, 241, 234, 0.1);
+            --line-strong: rgba(243, 241, 234, 0.22);
+            --accent: #1E5E3A;
+            --accent-glow: #2E8B57;
+            --accent-pink: #fbcfe8;
+            --font-display: 'Baloo 2', cursive, sans-serif;
+            --font-sans: 'Inter', sans-serif;
+            --gutter: 2.5rem;
+            --section: 8rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            background: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        ::selection { background: var(--accent-pink); color: #08080a; }
+
+        /* Preloader */
+        #preloader {
+            position: fixed; inset: 0; z-index: 100; background: var(--background);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: var(--gutter); transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .preloader-inner {
+            display: flex; justify-content: space-between; align-items: flex-end; width: 100%;
+        }
+        .preloader-brand {
+            font-family: var(--font-display); font-size: 3rem; text-transform: uppercase; line-height: 1; letter-spacing: -0.01em; color: var(--foreground);
+        }
+        .preloader-counter {
+            font-family: var(--font-display); font-size: 7.5rem; line-height: 1; color: var(--foreground); font-variant-numeric: tabular-nums;
+        }
+        .preloader-counter span { color: var(--accent-pink); }
+
+        /* SiteNav */
+        .header {
+            position: fixed; inset-inline: 0; top: 0; z-index: 50; pointer-events: none;
+        }
+        .nav-inner {
+            pointer-events: auto; display: flex; align-items: center; justify-content: space-between;
+            padding: 1.5rem var(--gutter); background: rgba(8, 8, 10, 0.8); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--line);
+        }
+        .logo-group { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: inherit; }
+        .logo-badge {
+            display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px;
+            border: 1px solid var(--line-strong); font-family: var(--font-display); font-weight: 700; background: var(--surface); color: var(--accent-pink);
+        }
+        .logo-text { font-size: 0.8125rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.22em; color: var(--muted); }
+        
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            font-size: 0.8125rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em;
+            color: var(--muted); text-decoration: none; transition: color 0.3s; position: relative;
+        }
+        .nav-links a:hover { color: var(--foreground); }
+        .nav-cta {
+            background: var(--surface-2); border: 1px solid var(--line-strong); color: var(--foreground);
+            padding: 0.6rem 1.4rem; border-radius: 9999px; font-weight: 600; font-size: 0.85rem;
+            text-decoration: none; transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .nav-cta:hover { background: var(--accent-pink); color: #08080a; border-color: var(--accent-pink); }
+
+        /* Main Container */
+        main { position: relative; width: 100%; overflow-x: hidden; }
+
+        /* Hero Section */
+        .hero {
+            position: relative; display: flex; flex-direction: column; min-height: 100svh; overflow: hidden; padding: 7rem var(--gutter) 4rem var(--gutter);
+        }
+        .hero-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 30; margin-top: 2rem; }
+        .hero-roles {
+            font-family: var(--font-display); text-transform: uppercase; line-height: 1.05; letter-spacing: -0.01em; font-size: 3.25rem; color: var(--foreground);
+        }
+        .hero-roles span { color: var(--accent-pink); display: block; }
+        .hero-desc { max-width: 26rem; font-size: 1.0625rem; color: var(--muted); line-height: 1.6; text-align: right; }
+        
+        .hero-center-name {
+            position: absolute; inset-inline: 0; bottom: 5vh; z-index: 10; text-align: center;
+            font-family: var(--font-display); font-size: clamp(6rem, 18vw, 24rem); text-transform: uppercase;
+            line-height: 0.78; letter-spacing: -0.01em; color: rgba(30, 94, 58, 0.25); pointer-events: none; user-select: none;
+        }
+        .hero-portrait-wrap {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); height: 75vh; width: 42vw; z-index: 20; pointer-events: auto;
+        }
+        .hero-portrait-wrap img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6)); }
+
+        /* Marquee Section */
+        .marquee-section {
+            overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 2rem 0; background: var(--surface);
+        }
+        .marquee-track { display: flex; width: max-content; animation: marquee 22s linear infinite; }
+        .marquee-item {
+            display: flex; align-items: center; font-family: var(--font-display); font-size: 3.25rem; text-transform: uppercase; letter-spacing: -0.01em; white-space: nowrap; color: var(--foreground);
+        }
+        .marquee-dot { width: 0.625rem; height: 0.625rem; border-radius: 9999px; background: var(--accent-pink); margin-inline: 2.5rem; }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* Content Sections */
+        section { padding: var(--section) var(--gutter); border-bottom: 1px solid var(--line); }
+        .section-header { margin-bottom: 4rem; }
+        .eyebrow {
+            display: flex; align-items: center; gap: 0.75rem; font-size: 0.8125rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.22em; color: var(--muted); margin-bottom: 1rem;
+        }
+        .eyebrow-dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: var(--accent-pink); }
+        .section-title {
+            font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); text-transform: uppercase; line-height: 0.95; letter-spacing: -0.01em; color: var(--foreground); max-width: 18ch;
+        }
+
+        /* Story Grid */
+        .story-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); align-items: start; }
+        .story-left { grid-column: span 6; }
+        .story-right { grid-column: span 6; display: flex; flex-direction: column; }
+        .principle-item {
+            border-top: 1px solid var(--line); padding: 2rem 0; display: grid; grid-template-columns: auto 1fr; gap: 1.5rem;
+        }
+        .principle-item:last-child { border-bottom: 1px solid var(--line); }
+        .principle-num { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--accent-pink); }
+        .principle-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+        .principle-desc { margin-top: 0.5rem; font-size: 1.0625rem; color: var(--muted); line-height: 1.6; }
+
+        /* Asset Showcase Grid (Post 4:5, Standee 850x2000, Brochure A5) */
+        .showcase-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.5rem; margin-top: 3rem;
+        }
+        .asset-box {
+            background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 1.5rem;
+            display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.3s, border-color 0.3s;
+        }
+        .asset-box:hover { transform: translateY(-5px); border-color: var(--accent-pink); }
+        
+        .ratio-4-5 { width: 100%; aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 1.25rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-4-5 img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+
+        .ratio-standee { width: 100%; aspect-ratio: 850/2000; max-height: 480px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 1.25rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-standee img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+
+        .ratio-a5 { width: 100%; aspect-ratio: 1/1.414; max-height: 420px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 1.25rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-a5 img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+
+        .asset-name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .asset-info { font-size: 0.9rem; color: var(--muted); }
+
+        /* Impact / Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); margin-top: 3rem; }
+        .stat-cell { display: flex; flex-direction: column; gap: 1rem; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line); padding: 3rem 2rem; }
+        .stat-cell:first-child { border-left: none; padding-left: 0; }
+        .stat-value { font-family: var(--font-display); font-size: 5rem; line-height: 1; color: var(--accent-pink); }
+        .stat-label { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); }
+
+        /* Footer */
+        footer { padding: var(--section) var(--gutter) 4rem var(--gutter); background: var(--surface); border-top: 1px solid var(--line); }
+        .footer-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2.5rem; margin-top: 3rem; }
+        .footer-left { grid-column: span 6; }
+        .footer-right { grid-column: span 6; text-align: right; display: flex; flex-direction: column; justify-content: flex-end; }
+        .footer-sig { font-family: var(--font-display); font-size: 3rem; text-transform: uppercase; line-height: 1; }
+        .footer-copy { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); margin-top: 1rem; }
+
+        @media (max-width: 1024px) {
+            .story-grid, .footer-grid { grid-template-columns: 1fr; }
+            .story-left, .story-right, .footer-left, .footer-right { grid-column: span 12; text-align: left; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-top { flex-direction: column; gap: 1.5rem; }
+            .hero-desc { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-brand">20/22 Takeaway</div>
+            <div class="preloader-counter"><span id="count">0</span>%</div>
+        </div>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="header">
+        <div class="nav-inner">
+            <a href="#top" class="logo-group">
+                <div class="logo-badge">20</div>
+                <span class="logo-text">Takeaway LHU</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#story">Tổng Quan</a></li>
+                <li><a href="#posts">Posts (4:5)</a></li>
+                <li><a href="#standees">Standee</a></li>
+                <li><a href="#brochure">Brochure A5</a></li>
+                <li><a href="report.html">Báo Cáo Đồ Án</a></li>
+                <li><a href="presentation.html">Slide Thuyết Trình</a></li>
+            </ul>
+            <a href="presentation.html" class="nav-cta">Mở Slide Trợ Giúp ↗</a>
+        </div>
+    </header>
+
+    <main id="top">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-top">
+                <h2 class="hero-roles">
+                    Matcha • Coffee • Milktea
+                    <span>Đồ Uống Mang Đi Gen Z</span>
+                </h2>
+                <p class="hero-desc">
+                    Hệ thống nhận diện thương hiệu và chiến lược content marketing cho mô hình xe đẩy tại Cơ sở 5 Đại học Lạc Hồng. Phục vụ nhanh, giá chuẩn 20k - 22k.
+                </p>
+            </div>
+            
+            <div class="hero-center-name">20/22 TAKEAWAY</div>
+            <div class="hero-portrait-wrap">
+                <img src="assets/images/key-visual.png" alt="20/22 Takeaway Key Visual">
+            </div>
+        </section>
+
+        <!-- Marquee Section -->
+        <div class="marquee-section">
+            <div class="marquee-track">
+                <div class="marquee-item">Trạm Năng Lượng<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Trạm Nạp Vị Ngon<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Trạm Cứu Cánh<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Giá 20k - 22k<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Trạm Năng Lượng<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Trạm Nạp Vị Ngon<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Trạm Cứu Cánh<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Giá 20k - 22k<span class="marquee-dot"></span></div>
+            </div>
+        </div>
+
+        <!-- Story Section -->
+        <section id="story">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Cơ Sở Lý Thuyết & Định Hướng</div>
+                <h2 class="section-title">Chiến Lược Thương Hiệu & Định Vị</h2>
+            </div>
+            <div class="story-grid">
+                <div class="story-left">
+                    <p style="font-size: 1.25k; line-height: 1.7; color: var(--muted); margin-bottom: 1.5rem;">
+                        20/22 Takeaway tập trung phục vụ học sinh, sinh viên và cư dân lân cận Cơ sở 5 LHU. Insight định hướng cốt lõi: <em>“Tôi muốn mua một món uống hợp gu, giá vừa túi tiền và có thể chọn nhanh mà không phải đọc quá nhiều thông tin.”</em>
+                    </p>
+                    <a href="report.html" class="nav-cta" style="width: fit-content; background: var(--accent-pink); color: #08080a;">Đọc Báo Cáo Phân Tích Đầy Đủ &rarr;</a>
+                </div>
+                <div class="story-right">
+                    <div class="principle-item">
+                        <div class="principle-num">01</div>
+                        <div>
+                            <h3 class="principle-title">Nhận Diện Xanh Matcha</h3>
+                            <p class="principle-desc">Sử dụng tông màu xanh Matcha chủ đạo (#1E5E3A) kết hợp kem tươi và be, tạo cảm giác thiên nhiên, hiện đại và tươi mới.</p>
+                        </div>
+                    </div>
+                    <div class="principle-item">
+                        <div class="principle-num">02</div>
+                        <div>
+                            <h3 class="principle-title">POSM Xe Đẩy & Dù Xanh Vàng</h3>
+                            <p class="principle-desc">Cụm xe đẩy kết hợp cây dù xanh vàng nổi bật từ xa, tạo điểm chạm trực tiếp giữa online và offline.</p>
+                        </div>
+                    </div>
+                    <div class="principle-item">
+                        <div class="principle-num">03</div>
+                        <div>
+                            <h3 class="principle-title">Phễu Nội Dung Đa Kênh</h3>
+                            <p class="principle-desc">Triển khai đồng bộ TOFU (Nhận biết), MOFU (Cân nhắc hương vị) và BOFU (Chuyển đổi ưu đãi tích thẻ).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Posts (4:5) -->
+        <section id="posts">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Hệ Thống Ấn Phẩm Số</div>
+                <h2 class="section-title">Social Posts (Tỷ Lệ Chuẩn 4:5)</h2>
+            </div>
+            <p style="color: var(--muted); font-size: 1.05rem;">Được hiển thị trọn vẹn 100%, không cắt xén, giữ chuẩn bố cục thiết kế Instagram và TikTok.</p>
+            <div class="showcase-grid">
+                <div class="asset-box">
+                    <div class="ratio-4-5"><img src="assets/images/post-best-seller.png" alt="Post Best Seller"></div>
+                    <div class="asset-name">Post Tổng Hợp Best Seller</div>
+                    <div class="asset-info">Trưng bày 4 món chủ lực kèm mức giá</div>
+                </div>
+                <div class="asset-box">
+                    <div class="ratio-4-5"><img src="assets/images/post-matcha-latte.png" alt="Matcha Latte"></div>
+                    <div class="asset-name">Post Matcha Latte</div>
+                    <div class="asset-info">Đại diện nhận diện xanh Matcha (20k)</div>
+                </div>
+                <div class="asset-box">
+                    <div class="ratio-4-5"><img src="assets/images/post-houjicha.png" alt="Houjicha Sữa Hạt"></div>
+                    <div class="asset-name">Post Houjicha Sữa Hạt</div>
+                    <div class="asset-info">Nhấn mạnh dòng trà rang ấm áp (22k)</div>
+                </div>
+                <div class="asset-box">
+                    <div class="ratio-4-5"><img src="assets/images/post-tra-buoi-hoa-dao.png" alt="Trà Bưởi Hoa Đào"></div>
+                    <div class="asset-name">Post Trà Bưởi Hoa Đào</div>
+                    <div class="asset-info">Trà trái cây tươi thanh mát (20k)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Standee Section (850x2000mm) -->
+        <section id="standees">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Điểm Bán Thực Tế</div>
+                <h2 class="section-title">Standee (Kích Thước 850mm x 2000mm)</h2>
+            </div>
+            <div class="showcase-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+                <div class="asset-box">
+                    <div class="ratio-standee"><img src="assets/images/banner-standee-best-seller.png" alt="Standee Best Seller"></div>
+                    <div class="asset-name">Standee Best Seller</div>
+                    <div class="asset-info">Trưng bày tại quầy xe</div>
+                </div>
+                <div class="asset-box">
+                    <div class="ratio-standee"><img src="assets/images/banner-standee-matcha-latte.png" alt="Standee Matcha"></div>
+                    <div class="asset-name">Standee Matcha Latte</div>
+                    <div class="asset-info">Nổi bật nhận diện thương hiệu</div>
+                </div>
+                <div class="asset-box">
+                    <div class="ratio-standee"><img src="assets/images/banner-standee-houjicha.png" alt="Standee Houjicha"></div>
+                    <div class="asset-name">Standee Houjicha</div>
+                    <div class="asset-info">Giới thiệu vị trà rang đặc biệt</div>
+                </div>
+                <div class="asset-box">
+                    <div class="ratio-standee"><img src="assets/images/banner-standee-tra-buoi-hoa-dao.png" alt="Standee Trà Bưởi"></div>
+                    <div class="asset-name">Standee Trà Bưởi Hoa Đào</div>
+                    <div class="asset-info">Quảng bá dòng trà trái cây</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brochure Section (A5) -->
+        <section id="brochure">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Tài Liệu Gọi Món</div>
+                <h2 class="section-title">Brochure Menu (Khổ A5) & Story Ads</h2>
+            </div>
+            <div class="showcase-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+                <div class="asset-box">
+                    <div class="ratio-a5"><img src="assets/images/brochure-a5.png" alt="Brochure A5"></div>
+                    <div class="asset-name">Brochure Menu A5</div>
+                    <div class="asset-info">Hỗ trợ khách chọn món nhanh chóng tại xe</div>
+                </div>
+                <div class="asset-box">
+                    <div class="ratio-a5"><img src="assets/images/story-ads.png" alt="Story Ads 9:16"></div>
+                    <div class="asset-name">Story Ads (9:16)</div>
+                    <div class="asset-info">Thu hút nhanh trên màn hình di động</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact / Numbers -->
+        <section>
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Dữ Liệu Chiến Dịch TikTok</div>
+                <h2 class="section-title">Kết Quả Đo Lường (09/09 - 21/10/2026)</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-cell">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label">Bài đăng TikTok</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value">74.2k</div>
+                    <div class="stat-label">Tổng lượt xem (Views)</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value">1.15k</div>
+                    <div class="stat-label">Lượt chia sẻ (Shares)</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-value">1.55%</div>
+                    <div class="stat-label">Share Rate tổng hợp</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-left">
+                <div class="footer-sig">20/22 Takeaway</div>
+                <div class="footer-copy">&copy; 2026 Nguyễn Bùi Minh Ánh - Lớp 25MC113 - Đại học Lạc Hồng. All rights reserved.</div>
+            </div>
+            <div class="footer-right">
+                <a href="presentation.html" class="nav-cta" style="width: fit-content; margin-left: auto;">Mở Slide Trình Chiếu Đồ Án &rarr;</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import Lenis from "lenis";
+        const lenis = new Lenis({ smoothWheel: true });
+        function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        // Preloader Animation
+        let count = 0;
+        const countEl = document.getElementById('count');
+        const preloader = document.getElementById('preloader');
+        
+        const interval = setInterval(() => {
+            count += Math.floor(Math.random() * 8) + 5;
+            if (count >= 100) {
+                count = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    preloader.style.transform = 'translateY(-100%)';
+                }, 300);
+            }
+            countEl.textContent = count;
+        }, 40);
+    </script>
+</body>
+</html>
