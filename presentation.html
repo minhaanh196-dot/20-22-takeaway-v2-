@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Trình Chiếu Đồ Án | 20/22 Takeaway</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #05160D;
+            color: #f3f1ea;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-container {
+            width: 88vw;
+            max-width: 1250px;
+            height: 78vh;
+            background: #0D3B22;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 24px;
+            padding: 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+        }
+        .slide { display: none; flex-direction: column; height: 100%; justify-content: space-between; }
+        .slide.active { display: flex; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .slide-header {
+            font-size: 0.85rem;
+            letter-spacing: 0.18em;
+            color: #fbcfe8;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .slide-title {
+            font-family: 'Baloo 2', cursive, sans-serif;
+            font-size: 2.6rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+        .slide-body {
+            font-size: 1.1rem;
+            color: rgba(243,241,234,0.9);
+            line-height: 1.6;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 1rem;
+        }
+        .slide-content-text { flex: 1.2; }
+        .slide-content-image {
+            flex: 1;
+            height: 100%;
+            max-height: 420px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 1rem;
+        }
+        .slide-content-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* KHÔNG CẮT XÉN HÌNH */
+            filter: drop-shadow(0 12px 25px rgba(0,0,0,0.6));
+            border-radius: 8px;
+        }
+
+        .slide-body ul { padding-left: 1.5rem; margin-top: 0.5rem; }
+        .slide-body li { margin-bottom: 0.7rem; }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 88vw;
+            max-width: 1250px;
+            margin-top: 1.5rem;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 0.7rem 1.8rem;
+            border-radius: 100px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Baloo 2', cursive, sans-serif;
+            font-size: 1rem;
+        }
+        .nav-btn:hover { background: #fbcfe8; color: #05160D; }
+        .slide-counter { font-size: 0.95rem; color: rgba(243,241,234,0.7); font-weight: 600; }
+        .home-link { color: #fbcfe8; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        .home-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1 -->
+        <div class="slide active" id="slide-1">
+            <div>
+                <div class="slide-header">Đồ Án Cuối Kỳ – Truyền Thông Đa Phương Tiện</div>
+                <h1 class="slide-title">20/22 Takeaway: Hệ Thống Quảng Cáo Đồ Uống Gen Z</h1>
+            </div>
+            <div class="slide-body">
+                <div class="slide-content-text">
+                    <p><strong>Nhóm thực hiện:</strong> Anh tài nhà bên</p>
+                    <p><strong>Sinh viên thực hiện:</strong> Nguyễn Bùi Minh Ánh (Lớp 25MC113 - MSSV: 125001994)</p>
+                    <p><strong>Giảng viên hướng dẫn:</strong> Nguyễn Lê Anh Thi</p>
+                    <p><strong>Địa điểm triển khai:</strong> Cơ sở 5 Đại học Lạc Hồng (LHU)</p>
+                    <p style="margin-top: 1rem; color: #fbcfe8;">Sử dụng phím mũi tên hoặc nút bên dưới để chuyển slide thuyết trình.</p>
+                </div>
+                <div class="slide-content-image">
+                    <img src="assets/images/key-visual.png" alt="Key Visual">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide" id="slide-2">
+            <div>
+                <div class="slide-header">Phần A – Cơ sở lý thuyết & Định hướng (20%)</div>
+                <h2 class="slide-title">Tổng Quan & Insight Khách Hàng</h2>
+            </div>
+            <div class="slide-body">
+                <div class="slide-content-text">
+                    <ul>
+                        <li><strong>Mô hình:</strong> Xe đẩy takeaway tập trung vào Matcha, Coffee và Milktea, phục vụ nhanh tại trường học.</li>
+                        <li><strong>Insight định hướng:</strong> <em>“Tôi muốn mua một món uống hợp gu, giá vừa túi tiền và có thể chọn nhanh mà không phải đọc quá nhiều thông tin.”</em></li>
+                        <li><strong>Định vị giá:</strong> 20k – 22k cực kỳ phù hợp với học sinh, sinh viên.</li>
+                    </ul>
+                </div>
+                <div class="slide-content-image">
+                    <img src="assets/images/post-best-seller.png" alt="Best Seller">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide" id="slide-3">
+            <div>
+                <div class="slide-header">Phần A – Cơ sở lý thuyết & Định hướng (20%)</div>
+                <h2 class="slide-title">Hệ Thống Màu Sắc Nhận Diện</h2>
+            </div>
+            <div class="slide-body">
+                <div class="slide-content-text">
+                    <ul>
+                        <li><strong>Xanh Matcha (#1E5E3A):</strong> Màu nhận diện chủ đạo, tạo liên tưởng đến trà và nguyên liệu tự nhiên.</li>
+                        <li><strong>Kem tươi (#F3EEE1) & Be (#F7F4E9):</strong> Nền trung tính, tạo cảm giác nhẹ nhàng, sạch sẽ.</li>
+                        <li><strong>Đen nhám (#222222) & Nâu cà phê (#5C3A21):</strong> Tăng tương phản, làm nổi bật giá và nhóm cà phê.</li>
+                    </ul>
+                </div>
+                <div class="slide-content-image">
+                    <img src="assets/images/brand-guideline.png" alt="Brand Guideline">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide" id="slide-4">
+            <div>
+                <div class="slide-header">Phần B – Triển khai sản phẩm quảng cáo (80%)</div>
+                <h2 class="slide-title">Key Visual & Standee (850mm x 2000mm)</h2>
+            </div>
+            <div class="slide-body">
+                <div class="slide-content-text">
+                    <ul>
+                        <li><strong>Key Visual:</strong> Xe đẩy cách điệu phong cách collage/sticker, kết nối không gian online và offline.</li>
+                        <li><strong>Cây dù xanh – vàng:</strong> Chi tiết POSM quan trọng giúp tăng nhận diện từ xa ngoài trời.</li>
+                        <li><strong>Standee chuẩn 850x2000mm:</strong> Bố cục dọc tối ưu tại điểm bán Cơ sở 5 LHU.</li>
+                    </ul>
+                </div>
+                <div class="slide-content-image">
+                    <img src="assets/images/banner-standee-best-seller.png" alt="Standee">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide" id="slide-5">
+            <div>
+                <div class="slide-header">Phần B – Triển khai sản phẩm quảng cáo (80%)</div>
+                <h2 class="slide-title">Social Posts (4:5) & Brochure A5</h2>
+            </div>
+            <div class="slide-body">
+                <div class="slide-content-text">
+                    <ul>
+                        <li><strong>Post đơn món (4:5):</strong> Tỷ lệ chuẩn Instagram/Facebook, hiển thị trọn vẹn ly sản phẩm và giá 20k-22k.</li>
+                        <li><strong>Brochure A5:</strong> Tài liệu cầm tay hỗ trợ gọi món trực tiếp tại xe đẩy.</li>
+                        <li><strong>Story Ads (9:16):</strong> Thu hút nhanh chóng trên màn hình di động.</li>
+                    </ul>
+                </div>
+                <div class="slide-content-image">
+                    <img src="assets/images/brochure-a5.png" alt="Brochure A5">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide" id="slide-6">
+            <div>
+                <div class="slide-header">Kết luận</div>
+                <h2 class="slide-title">Tổng Kết & Đánh Giá Hiệu Quả</h2>
+            </div>
+            <div class="slide-body">
+                <div class="slide-content-text">
+                    <ul>
+                        <li>Hệ thống quảng cáo đa kênh đồng bộ từ số hóa đến điểm bán thực tế.</li>
+                        <li>Đảm bảo tính chân thực sản phẩm, rõ ràng về giá và kích thích hành động mua hàng tức thì.</li>
+                        <li>Cảm ơn Thầy Cô và Hội Đồng đã lắng nghe!</li>
+                    </ul>
+                </div>
+                <div class="slide-content-image">
+                    <img src="assets/images/post-matcha-latte.png" alt="Matcha Latte">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <a href="index.html" class="home-link">&larr; Về Trang Chủ Web</a>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <button class="nav-btn" id="prev-btn">&larr; Trước</button>
+            <span class="slide-counter" id="slide-counter">Slide 1 / 6</span>
+            <button class="nav-btn" id="next-btn">Sau &rarr;</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('slide-counter');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            counter.textContent = `Slide ${index + 1} / ${slides.length}`;
+        }
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            } else if (e.key === 'ArrowLeft') {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+        });
+    </script>
+</body>
+</html>
