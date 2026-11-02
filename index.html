@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20/22 Takeaway | Trưng Bày Đồ Án Chi Tiết</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="importmap">
+    { "imports": { "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.19/dist/lenis.mjs" } }
+    </script>
+    <style>
+        :root {
+            --background: #05160D;
+            --foreground: #f3f1ea;
+            --surface: #0D3B22;
+            --surface-2: #1E5E3A;
+            --muted: #cbd5e1;
+            --line: rgba(243, 241, 234, 0.15);
+            --line-strong: rgba(243, 241, 234, 0.3);
+            --accent: #1E5E3A;
+            --accent-glow: #2E8B57;
+            --accent-pink: #fbcfe8;
+            --cream: #F3EEE1;
+            --beige: #F7F4E9;
+            --font-display: 'Baloo 2', cursive, sans-serif;
+            --font-sans: 'Inter', sans-serif;
+            --gutter: 3rem;
+            --section: 6rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            background: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        ::selection { background: var(--accent-pink); color: #05160D; }
+
+        /* Preloader */
+        #preloader {
+            position: fixed; inset: 0; z-index: 2000; background: var(--background);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: var(--gutter); transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .preloader-inner {
+            display: flex; justify-content: space-between; align-items: flex-end; width: 100%;
+        }
+        .preloader-brand {
+            font-family: var(--font-display); font-size: 3rem; text-transform: uppercase; line-height: 1; color: var(--foreground);
+        }
+        .preloader-counter {
+            font-family: var(--font-display); font-size: 7.5rem; line-height: 1; color: var(--foreground); font-variant-numeric: tabular-nums;
+        }
+        .preloader-counter span { color: var(--accent-pink); }
+
+        /* SiteNav */
+        .header {
+            position: fixed; inset-inline: 0; top: 0; z-index: 1500; pointer-events: none;
+        }
+        .nav-inner {
+            pointer-events: auto; display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem var(--gutter); background: rgba(5, 22, 13, 0.95); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--line);
+        }
+        .logo-group { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: inherit; }
+        .logo-badge {
+            display: grid; place-items: center; width: 2.3rem; height: 2.3rem; border-radius: 9999px;
+            border: 1px solid var(--line-strong); font-family: var(--font-display); font-weight: 700; background: var(--surface); color: var(--accent-pink);
+        }
+        .logo-text { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+        
+        .nav-links { display: flex; gap: 1rem; list-style: none; align-items: center; flex-wrap: wrap; }
+        .nav-links a {
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--muted); text-decoration: none; transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent-pink); }
+        .nav-cta {
+            background: var(--surface-2); border: 1px solid var(--line-strong); color: #fff;
+            padding: 0.4rem 1rem; border-radius: 9999px; font-weight: 700; font-size: 0.78rem;
+            text-decoration: none; transition: all 0.3s; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .nav-cta:hover { background: var(--accent-pink); color: #05160D; border-color: var(--accent-pink); }
+
+        /* Main Container */
+        main { position: relative; width: 100%; overflow-x: hidden; }
+
+        /* Hero Section */
+        .hero {
+            position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 100svh;
+            padding: 8rem var(--gutter) 4rem var(--gutter); background: linear-gradient(135deg, #05160D 0%, #0D3B22 60%, #1E5E3A 100%);
+        }
+        .hero-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; z-index: 20; position: relative;
+        }
+        .hero-text h1 {
+            font-family: var(--font-display); font-size: clamp(2.8rem, 5vw, 5rem); line-height: 1.1; margin-bottom: 1.2rem; color: #fff;
+        }
+        .hero-text h1 span { color: var(--accent-pink); }
+        .hero-text p {
+            font-size: 1.05rem; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; max-width: 45ch;
+        }
+        .hero-img-box {
+            display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.25);
+            border-radius: 24px; border: 1px solid var(--line); padding: 1.5rem; backdrop-filter: blur(10px);
+        }
+        .hero-img-box img {
+            max-width: 100%; max-height: 55vh; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6)); border-radius: 12px; cursor: pointer; transition: transform 0.3s;
+        }
+        .hero-img-box img:hover { transform: scale(1.02); }
+
+        /* Marquee Section */
+        .marquee-section {
+            overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.8rem 0; background: var(--surface);
+        }
+        .marquee-track { display: flex; width: max-content; animation: marquee 25s linear infinite; }
+        .marquee-item {
+            display: flex; align-items: center; font-family: var(--font-display); font-size: 2.5rem; text-transform: uppercase; letter-spacing: -0.01em; white-space: nowrap; color: #fff;
+        }
+        .marquee-dot { width: 0.6rem; height: 0.6rem; border-radius: 9999px; background: var(--accent-pink); margin-inline: 2rem; }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* Content Sections */
+        section { padding: var(--section) var(--gutter); border-bottom: 1px solid var(--line); background: rgba(13, 59, 34, 0.2); }
+        .section-header { margin-bottom: 2.5rem; }
+        .eyebrow {
+            display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent-pink); margin-bottom: 0.75rem;
+        }
+        .eyebrow-dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: var(--accent-pink); }
+        .section-title {
+            font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 3.2rem); text-transform: uppercase; line-height: 1.05; color: #fff;
+        }
+
+        /* Side-by-Side Presentation Layout (Content + Image) with exact formatting and uncropped image display */
+        .showcase-row {
+            display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center;
+            background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 3rem;
+        }
+        .showcase-row:nth-child(even) { direction: rtl; }
+        .showcase-row:nth-child(even) > * { direction: ltr; }
+        
+        .content-side h3 {
+            font-family: var(--font-display); font-size: 1.8rem; color: #fff; margin-bottom: 1rem; line-height: 1.2;
+        }
+        .content-side p, .content-side li {
+            font-size: 1rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.85rem;
+        }
+        .content-side ul { padding-left: 1.2rem; }
+
+        .image-side {
+            display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.35); border-radius: 16px; padding: 1.5rem; overflow: hidden; border: 1px solid var(--line); min-height: 400px;
+        }
+        .image-side img {
+            max-width: 100%; max-height: 480px; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6)); border-radius: 8px; cursor: pointer; transition: transform 0.3s;
+        }
+        .image-side img:hover { transform: scale(1.03); }
+
+        /* Grid for multi-assets */
+        .grid-assets { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .asset-card {
+            background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 1.5rem;
+            display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.3s, border-color 0.3s;
+        }
+        .asset-card:hover { transform: translateY(-5px); border-color: var(--accent-pink); }
+        
+        .ratio-4-5 { width: 100%; aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-4-5 img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); cursor: pointer; }
+
+        .ratio-standee { width: 100%; aspect-ratio: 850/2000; max-height: 420px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-standee img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); cursor: pointer; }
+
+        .ratio-a5 { width: 100%; aspect-ratio: 1/1.414; max-height: 380px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-a5 img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); cursor: pointer; }
+
+        .ratio-mockup { width: 100%; aspect-ratio: 16/10; max-height: 380px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 1.2rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-mockup img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; cursor: pointer; }
+
+        .asset-name { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem; }
+        .asset-info { font-size: 0.85rem; color: var(--muted); }
+
+        /* Lightbox Modal */
+        #image-modal {
+            position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.92);
+            display: none; justify-content: center; align-items: center; padding: 2rem; backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            position: relative; max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column; align-items: center;
+        }
+        .modal-content img {
+            max-width: 85vw; max-height: 78vh; width: auto; height: auto; object-fit: contain; border-radius: 12px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); background: #111;
+        }
+        .modal-caption {
+            margin-top: 1rem; color: #fff; font-family: var(--font-display); font-size: 1.4rem; text-align: center;
+        }
+        .modal-close {
+            position: absolute; top: -3rem; right: 0; background: rgba(255,255,255,0.15); border: none; color: #fff;
+            width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: var(--accent-pink); color: #05160D; }
+
+        /* Footer */
+        footer { padding: var(--section) var(--gutter) 4rem var(--gutter); background: #030d07; border-top: 1px solid var(--line); }
+        .footer-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; align-items: center; }
+        .footer-left { grid-column: span 8; }
+        .footer-right { grid-column: span 4; text-align: right; }
+        .footer-sig { font-family: var(--font-display); font-size: 2.3rem; text-transform: uppercase; line-height: 1; color: #fff; }
+        .footer-copy { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-top: 0.75rem; }
+
+        @media (max-width: 1024px) {
+            .hero-grid, .showcase-row, .footer-grid { grid-template-columns: 1fr; }
+            .hero-text { text-align: center; }
+            .hero-text p { margin-inline: auto; }
+            .footer-left, .footer-right { grid-column: span 12; text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-brand">20/22 Takeaway</div>
+            <div class="preloader-counter"><span id="count">0</span>%</div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal for Zooming Images -->
+    <div id="image-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="close-modal">&times;</button>
+            <img id="modal-img" src="" alt="Zoomed Design">
+            <div class="modal-caption" id="modal-caption">Chi tiết thiết kế</div>
+        </div>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="header">
+        <div class="nav-inner">
+            <a href="#top" class="logo-group">
+                <div class="logo-badge">20</div>
+                <span class="logo-text">Anh tài nhà bên</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#sec-1">Mục 1</a></li>
+                <li><a href="#sec-2">Mục 2</a></li>
+                <li><a href="#sec-3-4">Mục 3&4</a></li>
+                <li><a href="#sec-5">Mục 5</a></li>
+                <li><a href="#sec-6">Mục 6</a></li>
+                <li><a href="#sec-7">Mục 7</a></li>
+                <li><a href="#sec-8">Mục 8</a></li>
+                <li><a href="#sec-9-11">Mục 9-11</a></li>
+            </ul>
+            <a href="report.html" class="nav-cta">Báo Cáo Docx ↗</a>
+        </div>
+    </header>
+
+    <main id="top">
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <span class="eyebrow"><div class="eyebrow-dot"></div>Đồ Án Cuối Kỳ - Nhóm Anh tài nhà bên</span>
+                    <h1>20/22 Takeaway <span>Báo Cáo & Trưng Bày Đồ Án</span></h1>
+                    <p>
+                        Trình bày đầy đủ, chi tiết từng mục từ Mục 1 đến Mục 11 theo chuẩn file Docx, kết hợp nội dung thuyết trình đặt song song cạnh hình ảnh đúng tỷ lệ gốc.
+                    </p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <a href="#sec-1" class="nav-cta" style="background: var(--accent-pink); color: #05160D; padding: 0.8rem 1.8rem; font-size: 0.95rem;">Bắt Đầu Xem (Mục 1) &rarr;</a>
+                        <a href="report.html" class="nav-cta" style="background: rgba(255,255,255,0.1); padding: 0.8rem 1.8rem; font-size: 0.95rem;">Xem Báo Cáo Gốc</a>
+                    </div>
+                </div>
+                <div class="hero-img-box">
+                    <img src="assets/images/key-visual.png" alt="Key Visual 20/22 Takeaway" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- Marquee Section -->
+        <div class="marquee-section">
+            <div class="marquee-track">
+                <div class="marquee-item">Mục 1 đến Mục 11 Chuẩn Docx<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Key Visual • Bảng Màu • Best Seller<span class="marquee-dot"></span></div>
+                <div class="marquee-item">POSM • Standee • Brochure A5<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Mockup Thực Tế Cơ Sở 5 LHU<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Mục 1 đến Mục 11 Chuẩn Docx<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Key Visual • Bảng Màu • Best Seller<span class="marquee-dot"></span></div>
+                <div class="marquee-item">POSM • Standee • Brochure A5<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Mockup Thực Tế Cơ Sở 5 LHU<span class="marquee-dot"></span></div>
+            </div>
+        </div>
+
+        <!-- ================= MỤC 1 ================= -->
+        <section id="sec-1">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần A - Cơ Sở Lý Thuyết & Định Hướng (20%)</div>
+                <h2 class="section-title">1. Tổng Quan Thương Hiệu & Bối Cảnh</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Nội Dung Thuyết Trình & Phân Tích</h3>
+                    <p><strong>20/22 Takeaway</strong> là mô hình kinh doanh đồ uống mang đi, tập trung vào các nhóm Matcha, Coffee và Milktea. Mô hình xe đẩy giúp thương hiệu tiếp cận khách hàng trực tiếp, phục vụ nhanh và linh hoạt tại khu vực trường học.</p>
+                    <p><strong>Bối cảnh triển khai:</strong> Khu vực Cơ sở 5 LHU và cư dân lân cận. Khách hàng thường có quỹ thời gian ngắn giữa các tiết học hoặc giờ làm, cần thức uống tiện lợi, giá dễ tiếp cận và hình ảnh đủ hấp dẫn để nhận biết món nhanh trên mạng xã hội.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/key-visual.png" alt="Mục 1: Key Visual" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 2 ================= -->
+        <section id="sec-2">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần A - Cơ Sở Lý Thuyết & Định Hướng</div>
+                <h2 class="section-title">2. Khách Hàng Mục Tiêu Và Insight</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Phân Tích Chân Dung Khách Hàng & Insight</h3>
+                    <ul>
+                        <li><strong>Học sinh, sinh viên:</strong> Ưu tiên giá hợp lý, món dễ chọn, hình ảnh bắt mắt; thường xem nội dung trên điện thoại. <em>Hàm ý thiết kế:</em> Giá 20k–22k phải rõ; tên món ngắn; hình ly là trọng tâm; CTA trực tiếp.</li>
+                        <li><strong>Cư dân lân cận:</strong> Muốn mua nhanh, tiện đường, dễ nhận ra điểm bán. <em>Hàm ý thiết kế:</em> Duy trì nhận diện xe đẩy và dù màu đặc trưng.</li>
+                        <li><strong>Giảng viên, cán bộ nhà trường:</strong> Cần sự tiện lợi và thông tin sản phẩm rõ ràng. <em>Hàm ý thiết kế:</em> Bố cục gọn, hình ảnh sạch sẽ, thông tin nhất quán.</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Insight định hướng:</strong> <em>“Tôi muốn mua một món uống hợp gu, giá vừa túi tiền và có thể chọn nhanh mà không phải đọc quá nhiều thông tin.”</em></p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/key-visual.png" alt="Mục 2: Key Visual" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 3 & 4 ================= -->
+        <section id="sec-3-4">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần A - Cơ Sở Lý Thuyết & Định Hướng</div>
+                <h2 class="section-title">3 & 4. Định Vị, Thông Điệp, Hệ Thống Màu Sắc & Phong Cách Thị Giác</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Định Vị, Mục Tiêu & Bảng Màu Nhận Diện</h3>
+                    <p><strong>Định vị:</strong> 20/22 Takeaway là điểm mua đồ uống trẻ trung, gần gũi và tiện lợi, cung cấp Matcha – Coffee – Milktea với mức giá phù hợp học sinh, sinh viên (20k-22k).</p>
+                    <p><strong>Hệ thống màu sắc & vai trò:</strong></p>
+                    <ul>
+                        <li><strong>Kem tươi (#F3EEE1) & Be (#F7F4E9):</strong> Nền trung tính, tạo cảm giác nhẹ và sạch.</li>
+                        <li><strong>Xanh Matcha (#1E5E3A):</strong> Màu nhận diện chủ đạo, liên tưởng đến trà và nguyên liệu.</li>
+                        <li><strong>Đen nhám (#222222) & Nâu cà phê (#5C3A21):</strong> Tăng tương phản, làm nổi bật giá và nhóm cà phê.</li>
+                    </ul>
+                    <p><strong>Phong cách tổng thể:</strong> Trẻ trung, thân thiện, có tính thủ công nhưng chỉn chu. Dạng collage/sticker kết hợp ảnh ly thật làm bằng chứng trực quan.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/brand-guideline.png" alt="Mục 3 & 4: Bảng màu & Brand Guideline" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 5 ================= -->
+        <section id="sec-5">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế (80%)</div>
+                <h2 class="section-title">5. Ý Tưởng Sáng Tạo Và Key Visual (KV)</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Key Visual Xe Đẩy & Dù Xanh Vàng</h3>
+                    <p><strong>Key Visual trung tâm:</strong> Chiếc xe đẩy 20/22 Takeaway được cách điệu theo phong cách collage/sticker. Đây là hình ảnh đại diện cho trải nghiệm mua hàng thật tại điểm bán, đồng thời tạo liên kết giữa quảng cáo trên mạng xã hội và địa điểm thực tế.</p>
+                    <p><strong>Cây dù xanh – vàng:</strong> Chi tiết POSM bổ sung quan trọng giúp tăng khả năng nhận diện từ xa trong không gian ngoài trời tại trường học, giúp khách hàng dễ liên kết giữa quảng cáo và điểm bán thực tế.</p>
+                    <p><strong>Vai trò KV:</strong> KV làm nhiệm vụ nhận diện thương hiệu và tạo bối cảnh; ảnh ly thật, tên món, giá và CTA đảm nhiệm thuyết phục mua hàng.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/key-visual.png" alt="Mục 5: Key Visual" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 6 ================= -->
+        <section id="sec-6">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">6. Bộ Sưu Tập Sản Phẩm Mới – Best Seller Collection</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Chi Tiết 4 Sản Phẩm Best Seller</h3>
+                    <ul>
+                        <li><strong>Trà sữa Thái đỏ (22k):</strong> Món có sắc đỏ nổi bật, tạo điểm nhấn màu trong bộ sưu tập. Màu trà rõ, bề mặt ly sạch, không garnish thừa.</li>
+                        <li><strong>Trà bưởi hoa đào (20k):</strong> Lựa chọn trà trái cây tươi và nhẹ, làm nổi sắc trà và cảm giác thanh mát.</li>
+                        <li><strong>Houjicha sữa hạt (22k):</strong> Đại diện nhóm trà rang và vị sữa hạt, nhấn sắc nâu/trà rang tạo cảm giác dịu.</li>
+                        <li><strong>Matcha Latte (20k):</strong> Món đại diện nhận diện xanh Matcha, giữ màu matcha chân thực và lớp sữa mịn.</li>
+                    </ul>
+                    <p><strong>Nguyên tắc:</strong> Sử dụng hình ảnh ly thật làm nguồn chính, không tự ý đổi form ly, màu thức uống hoặc nắp.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/post-best-seller.png" alt="Mục 6: Best Seller Collection" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 7 ================= -->
+        <section id="sec-7">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">7. Phân Tích Từng Ấn Phẩm Quảng Cáo</h2>
+            </div>
+            
+            <!-- 7.1 Social Post đơn món -->
+            <div class="showcase-row" style="margin-bottom: 2.5rem;">
+                <div class="content-side">
+                    <h3>7.1. Social Post Đơn Món (Single Post)</h3>
+                    <p><strong>Mục đích:</strong> Giới thiệu một món cụ thể và thúc đẩy người xem đặt mua hoặc ghé điểm bán. Thứ bậc thị giác: 1) ly nước, 2) tên món, 3) giá, 4) CTA.</p>
+                    <p><strong>Lý do thiết kế:</strong> Người dùng lướt mạng xã hội cần nhận ra món và giá gần như ngay lập tức. Bố cục thống nhất giúp so sánh món dễ hơn.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/post-matcha-latte.png" alt="Social Post Đơn Món" class="zoomable">
+                </div>
+            </div>
+
+            <!-- 7.2 Post tổng hợp Best Seller -->
+            <div class="showcase-row" style="margin-bottom: 2.5rem;">
+                <div class="content-side">
+                    <h3>7.2. Post Tổng Hợp Best Seller Collection</h3>
+                    <p><strong>Mục đích:</strong> Cho khách hàng thấy nhiều lựa chọn trong cùng một khung hình, hỗ trợ so sánh trước khi chọn món.</p>
+                    <p><strong>Quy cách:</strong> Sắp xếp 4 ly theo lưới rõ ràng, mỗi ly đi cùng tên món và giá tương ứng, dùng chung kiểu nhãn giá và kiểu chữ.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/post-best-seller.png" alt="Post Tổng Hợp" class="zoomable">
+                </div>
+            </div>
+
+            <!-- 7.3 Story Ads -->
+            <div class="showcase-row" style="margin-bottom: 2.5rem;">
+                <div class="content-side">
+                    <h3>7.3. Story Ads (Định Dạng Dọc 9:16)</h3>
+                    <p><strong>Mục đích:</strong> Thu hút sự chú ý nhanh trên màn hình điện thoại và dẫn người xem đến hành động mua hoặc ghé xe.</p>
+                    <p><strong>Quy cách:</strong> Đặt chủ thể ly ở vùng trung tâm, mở đầu bằng hình ảnh món nổi bật và câu ngắn, tương phản cao để đọc trên màn hình nhỏ.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/story-ads.png" alt="Story Ads 9:16" class="zoomable">
+                </div>
+            </div>
+
+            <!-- 7.4 Brochure A5 -->
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>7.4. Brochure Menu (Khổ A5)</h3>
+                    <p><strong>Mục đích:</strong> Giới thiệu menu/bộ sưu tập tại điểm bán, hỗ trợ khách chọn món khi đứng trước xe.</p>
+                    <p><strong>Quy cách:</strong> Khổ A5 dọc hoặc ngang, phân chia vùng rõ ràng (nhận diện, nhóm món, giá, CTA), giữ khoảng trống ở khu vực giữa cho ảnh ly thật.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/brochure-a5.png" alt="Brochure A5" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 8 ================= -->
+        <section id="sec-8">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">8. POSM Tại Điểm Bán: Xe 20/22 Và Cây Dù Xanh – Vàng</h2>
+            </div>
+            
+            <div class="showcase-row" style="margin-bottom: 2.5rem;">
+                <div class="content-side">
+                    <h3>8.1. Mô Tả Cụ Thể Xe Và Cây Dù</h3>
+                    <p><strong>Xe đẩy 20/22:</strong> Cấu trúc nhận diện vật lý chính, gắn với trải nghiệm mua đồ uống mang đi, giữ đặc điểm nhanh gọn, linh hoạt.</p>
+                    <p><strong>Cây dù xanh – vàng:</strong> Chi tiết POSM bổ sung quan trọng tạo tương phản dễ nhìn, giúp điểm bán nổi bật ngoài trời và tạo dấu hiệu nhận diện từ xa.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/banner-standee-best-seller.png" alt="Standee Best Seller" class="zoomable">
+                </div>
+            </div>
+
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>8.2 & 8.3. Giá Trị Truyền Thông & Tiêu Chí Thiết Kế POSM</h3>
+                    <p><strong>Giá trị truyền thông:</strong> Tăng nhận diện từ xa, tạo điểm nhấn màu sắc, kết nối quảng cáo số với điểm bán thật ngoài đời.</p>
+                    <p><strong>Tiêu chí thiết kế:</strong> Độ trung thực xe và dù, khả năng nhận diện tên 20/22, tính dễ đọc của giá, tính đồng bộ màu xanh - vàng giữa KV và thực tế.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/banner-standee-matcha-latte.png" alt="Standee Matcha" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 9, 10 & 11 ================= -->
+        <section id="sec-9-11">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">9, 10 & 11. Triển Khai Đa Kênh, Đánh Giá Hiệu Quả & Kết Luận</h2>
+            </div>
+            
+            <div class="showcase-row" style="margin-bottom: 2.5rem;">
+                <div class="content-side">
+                    <h3>9 & 10. Hành Trình Khách Hàng & Đánh Giá</h3>
+                    <p><strong>Hành trình đề xuất:</strong> Nhìn bài quảng cáo &rarr; ghi nhớ món và giá &rarr; nhận ra xe 20/22 cùng cây dù xanh vàng &rarr; xem brochure tại điểm bán &rarr; chọn món và mua.</p>
+                    <p><strong>Tiêu chí đánh giá hiệu quả:</strong> Nhận diện thương hiệu, khả năng đọc thông tin, tính chân thực sản phẩm, tính đồng bộ và khả năng chuyển đổi hành vi.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/poster-best-seller-a4.png" alt="Poster A4" class="zoomable">
+                </div>
+            </div>
+
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>11. Mockup Thực Tế & Kết Luận Đồ Án</h3>
+                    <p><strong>Thực tế triển khai:</strong> Hình ảnh mockup xe đẩy và cây dù xanh vàng tại Cơ sở 5 LHU chứng minh tính khả thi và đồng bộ cao của toàn bộ hệ thống thiết kế.</p>
+                    <p><strong>Kết luận:</strong> Dự án 20/22 Takeaway thành công trong việc xây dựng hệ thống quảng cáo đồng bộ từ số hóa đến điểm bán thực tế, tối ưu hóa nhận diện và thúc đẩy mua hàng hiệu quả.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/mockup-standee-xe-day-1.jpg" alt="Mockup Xe Day 1" class="zoomable">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-left">
+                <div class="footer-sig">20/22 Takeaway - Nhóm Anh tài nhà bên</div>
+                <div class="footer-copy">Giảng viên hướng dẫn: Nguyễn Lê Anh Thi | Đồ án cuối kỳ Truyền thông Đa phương tiện</div>
+            </div>
+            <div class="footer-right">
+                <a href="report.html" class="nav-cta" style="width: fit-content; margin-left: auto;">Xem Báo Cáo Chi Tiết &rarr;</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
