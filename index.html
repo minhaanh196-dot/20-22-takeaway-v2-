@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20/22 Takeaway | Đồ Uống Mang Đi Gen Z</title>
+    <meta name="description" content="Đồ uống Matcha, Coffee, Milktea chất lượng tại Cơ sở 5 LHU. Giá chỉ từ 20k - 22k.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;500;600&family=Manrope:wght@400;700&family=Galada&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --muted-color: rgba(255, 255, 255, 0.75);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --accent-pink: #fbcfe8;
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Galada', cursive;
+            
+            /* Dynamic Background Variables - Matcha Theme */
+            --bg-inner: #1E5E3A;
+            --bg-mid: #0D3B22;
+            --bg-outer: #05160D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at center, var(--bg-inner) 0%, var(--bg-mid) 50%, var(--bg-outer) 100%);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            overflow: hidden;
+            height: 100vh;
+            transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.coffee-theme {
+            --bg-inner: #5C3A21;
+            --bg-mid: #332011;
+            --bg-outer: #140C07;
+        }
+
+        /* Bubbles */
+        #bubbles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: floatUp 8s linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0.5); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* Header */
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4%; position: fixed; top: 0; width: 100%; z-index: 100;
+        }
+        .logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            font-weight: 700; font-size: 1.4rem; font-family: var(--font-heading);
+            color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .logo span.badge-price {
+            background: #fbcfe8; color: #1E5E3A; font-size: 0.75rem; font-family: var(--font-main);
+            padding: 0.2rem 0.6rem; border-radius: 12px; font-weight: 700;
+        }
+        .nav {
+            display: flex; gap: 0.4rem; background: rgba(255, 255, 255, 0.08);
+            padding: 0.4rem; border-radius: 100px; border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+        }
+        .nav-item {
+            font-family: 'Manrope', sans-serif; color: var(--muted-color); text-decoration: none;
+            font-size: 0.85rem; font-weight: 500; padding: 0.5rem 1.2rem; border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: #fbcfe8; color: #05160D; font-weight: 600;
+        }
+        .action-btns { display: flex; gap: 1rem; }
+        .btn-link {
+            background: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.7rem 1.5rem; border-radius: 100px; font-weight: 600; font-size: 0.85rem;
+            text-decoration: none; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-link:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+
+        /* Hero Layout */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 0 4%; padding-top: 5rem;
+        }
+        .hero-content {
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; height: 100%; position: relative;
+        }
+
+        /* Left Column */
+        .hero-left {
+            display: flex; flex-direction: column; height: 100%; padding: 5rem 0; gap: 1.5rem; z-index: 10; max-width: 420px;
+        }
+        .main-title {
+            font-family: var(--font-heading); font-size: clamp(4rem, 7vw, 9rem);
+            line-height: 0.85; font-weight: 400; color: white;
+        }
+        .main-title .outline { color: rgba(255,255,255,0.9); }
+        .description {
+            color: var(--muted-color); font-size: 1rem; line-height: 1.6;
+        }
+        .cta-group { display: flex; gap: 1rem; align-items: center; }
+        .primary-btn {
+            display: flex; align-items: center; gap: 1rem; background: rgba(0, 0, 0, 0.4);
+            color: white; border: 1px solid rgba(255,255,255,0.2); padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+            border-radius: 100px; font-weight: 700; cursor: pointer; text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .primary-btn:hover { background: rgba(0, 0, 0, 0.6); transform: translateY(-2px); }
+        .plus-icon {
+            background: #fbcfe8; color: #05160D; width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            font-size: 1.3rem; font-weight: 900;
+        }
+        .award-badge {
+            display: flex; align-items: center; gap: 1rem; margin-top: auto;
+            background: rgba(255,255,255,0.05); padding: 0.8rem 1rem; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1); width: fit-content;
+        }
+        .award-text { display: flex; flex-direction: column; }
+        .award-title { font-size: 0.65rem; letter-spacing: 0.1em; color: #fbcfe8; font-weight: 700; }
+        .award-subtitle { font-size: 0.8rem; font-weight: 600; }
+
+        /* Center Product Display */
+        .hero-center {
+            display: flex; justify-content: center; align-items: center;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;
+            pointer-events: none;
+        }
+        .product-showcase {
+            position: relative; width: 340px; height: 500px;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 0.5s ease;
+        }
+        .product-showcase img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            filter: drop-shadow(0 25px 40px rgba(0,0,0,0.5));
+            animation: floatCan 6s ease-in-out infinite;
+        }
+        @keyframes floatCan {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        /* Right Column (Carousel & Side Title) */
+        .hero-right {
+            display: flex; flex-direction: column; justify-content: space-between;
+            align-items: flex-end; text-align: right; height: 100%; padding: 5rem 0; z-index: 10; width: 420px;
+        }
+        .product-carousel {
+            display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-end;
+        }
+        .carousel-cards { display: flex; gap: 1rem; }
+        .card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            padding: 1rem; padding-top: 4rem; border-radius: 24px;
+            display: flex; flex-direction: column; align-items: center; gap: 1rem;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 130px; backdrop-filter: blur(10px); text-align: center;
+        }
+        .card:hover { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.4); }
+        .card.active { border-color: #fbcfe8; border-width: 2px; background: rgba(255,255,255,0.12); }
+        .card img {
+            width: 110px; height: auto; margin-top: -6rem;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4));
+            transition: transform 0.4s ease;
+        }
+        .card:hover img { transform: translateY(-10px) scale(1.08); }
+        .card-info { display: flex; flex-direction: column; font-size: 0.75rem; width: 100%; gap: 0.2rem; }
+        .card-info span:first-child { font-weight: 700; color: #fff; }
+        .card-info span:last-child { color: #fbcfe8; font-weight: 600; }
+
+        .side-title {
+            font-family: var(--font-heading); font-size: clamp(3.5rem, 6vw, 7rem);
+            line-height: 0.85; font-weight: 400; color: white; text-align: right;
+        }
+
+        /* Modal Gallery / Viewer */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 1000; display: none;
+            justify-content: center; align-items: center; backdrop-filter: blur(10px);
+            padding: 2rem;
+        }
+        .modal-content {
+            background: #111a14; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 24px; padding: 2.5rem; max-width: 900px; width: 100%;
+            max-height: 85vh; overflow-y: auto; color: #fff; position: relative;
+        }
+        .modal-close {
+            position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.1);
+            border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%;
+            font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: #fbcfe8; color: #05160D; }
+        .modal-title { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 1rem; color: #fbcfe8; }
+        .grid-gallery {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;
+        }
+        .gallery-card {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem;
+        }
+        .gallery-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; }
+        .gallery-card h4 { font-size: 0.95rem; font-weight: 600; color: #fff; }
+        .gallery-card p { font-size: 0.8rem; color: var(--muted-color); }
+
+        @media (max-width: 1024px) {
+            .hero-content { flex-direction: column; justify-content: center; text-align: center; }
+            .hero-left, .hero-right { width: 100%; align-items: center; text-align: center; padding: 2rem 0; }
+            .hero-center { position: relative; height: 300px; margin: 1rem 0; }
+            body { overflow: auto; height: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div id="bubbles-container"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span>20/22 Takeaway</span>
+            <span class="badge-price">20k - 22k</span>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-item active">Trang Chủ</a>
+            <a href="report.html" class="nav-item">Báo Cáo Đồ Án</a>
+            <a href="presentation.html" class="nav-item">Slide Trình Chiếu</a>
+            <a href="#" class="nav-item" id="open-gallery">Thư Viện Ảnh (POSM)</a>
+        </nav>
+        <div class="action-btns">
+            <a href="report.html" class="btn-link">Xem Báo Cáo Chi Tiết</a>
+        </div>
+    </header>
+
+    <main class="hero">
+        <div class="hero-content">
+            <!-- Left Column -->
+            <div class="hero-left">
+                <h1 class="main-title">
+                    <span class="outline">Matcha</span><br>
+                    & Coffee
+                </h1>
+                <p class="description">
+                    Mô hình đồ uống mang đi tại Cơ sở 5 LHU. Phục vụ nhanh, giá dễ tiếp cận (20k - 22k), thiết kế trẻ trung chuẩn Gen Z dành cho học sinh, sinh viên và cư dân lân cận.
+                </p>
+                <div class="cta-group">
+                    <a href="presentation.html" class="primary-btn">
+                        Bảo Vệ Đồ Án
+                        <span class="plus-icon">+</span>
+                    </a>
+                </div>
+                <div class="award-badge">
+                    <div class="award-text">
+                        <span class="award-title">ĐỒ ÁN CUỐI KỲ</span>
+                        <span class="award-subtitle">Truyền Thông Đa Phương Tiện</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Product Showcase -->
+            <div class="hero-center">
+                <div class="product-showcase" id="product-showcase">
+                    <img id="main-can-img" src="assets/images/key-visual.png" alt="20/22 Takeaway Key Visual">
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="hero-right">
+                <div class="product-carousel">
+                    <div class="carousel-cards">
+                        <div class="card active" data-flavor="matcha" data-img="assets/images/post-matcha-latte.png" data-theme="matcha">
+                            <img src="assets/images/post-matcha-latte.png" alt="Matcha Latte">
+                            <div class="card-info">
+                                <span>Matcha Latte</span>
+                                <span>20,000đ</span>
+                            </div>
+                        </div>
+                        <div class="card" data-flavor="coffee" data-img="assets/images/post-houjicha.png" data-theme="coffee">
+                            <img src="assets/images/post-houjicha.png" alt="Houjicha Sữa Hạt">
+                            <div class="card-info">
+                                <span>Houjicha Sữa Hạt</span>
+                                <span>22,000đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="side-title">
+                    <span class="outline">Takeaway</span><br>
+                    Gen Z
+                </h2>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Gallery for POSM & Assets -->
+    <div class="modal-overlay" id="gallery-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="close-modal">&times;</button>
+            <h2 class="modal-title">Thư Viện Ấn Phẩm & POSM (20/22 Takeaway)</h2>
+            <p style="color: var(--muted-color); margin-bottom: 1rem;">Toàn bộ tài nguyên hình ảnh, standee, poster, brochure và mockup xe đẩy thực tế phục vụ chiến dịch.</p>
+            
+            <div class="grid-gallery">
+                <div class="gallery-card">
+                    <img src="assets/images/key-visual.png" alt="Key Visual">
+                    <h4>Key Visual Trung Tâm</h4>
+                    <p>Xe đẩy collage/sticker kết hợp dù xanh - vàng.</p>
+                </div>
+                <div class="gallery-card">
+                    <img src="assets/images/brochure-a5.png" alt="Brochure A5">
+                    <h4>Brochure A5 Tại Điểm Bán</h4>
+                    <p>Menu trực quan, hỗ trợ khách chọn món nhanh.</p>
+                </div>
+                <div class="gallery-card">
+                    <img src="assets/images/post-best-seller.png" alt="Best Seller Post">
+                    <h4>Post Tổng Hợp Best Seller</h4>
+                    <p>Trưng bày 4 món chủ lực và mức giá rõ ràng.</p>
+                </div>
+                <div class="gallery-card">
+                    <img src="assets/images/mockup-standee-xe-day-1.jpg" alt="Mockup Xe 1">
+                    <h4>Mockup Xe Đẩy Ngày 1</h4>
+                    <p>Hình ảnh thực tế xe đẩy tại Cơ sở 5 LHU.</p>
+                </div>
+                <div class="gallery-card">
+                    <img src="assets/images/mockup-standee-xe-day-2.jpg" alt="Mockup Xe 2">
+                    <h4>Mockup Xe Đẩy Ngày 2</h4>
+                    <p>Góc chụp cây dù xanh - vàng nhận diện từ xa.</p>
+                </div>
+                <div class="gallery-card">
+                    <img src="assets/images/story-ads.png" alt="Story Ads">
+                    <h4>Story Ads 9:16</h4>
+                    <p>Định dạng dọc thu hút nhanh trên điện thoại.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Bubble generator
+        const bubblesContainer = document.getElementById('bubbles-container');
+        for (let i = 0; i < 25; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            const size = Math.random() * 20 + 8;
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            bubble.style.left = `${Math.random() * 100}vw`;
+            bubble.style.animationDuration = `${Math.random() * 6 + 5}s`;
+            bubble.style.animationDelay = `${Math.random() * 5}s`;
+            bubblesContainer.appendChild(bubble);
+        }
+
+        // Flavor switching
+        const cards = document.querySelectorAll('.card');
+        const mainCanImg = document.getElementById('main-can-img');
+        const body = document.body;
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                cards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                
+                const theme = card.dataset.theme;
+                const imgSrc = card.dataset.img;
+
+                // Animate image transition
+                gsap.to(mainCanImg, {
+                    scale: 0.8,
+                    opacity: 0,
+                    duration: 0.3,
+                    onComplete: () => {
+                        mainCanImg.src = imgSrc;
+                        if (theme === 'coffee') {
+                            body.classList.add('coffee-theme');
+                            gsap.to(body, { '--bg-inner': '#5C3A21', '--bg-mid': '#332011', '--bg-outer': '#140C07', duration: 1 });
+                        } else {
+                            body.classList.remove('coffee-theme');
+                            gsap.to(body, { '--bg-inner': '#1E5E3A', '--bg-mid': '#0D3B22', '--bg-outer': '#05160D', duration: 1 });
+                        }
+                        gsap.to(mainCanImg, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.5)" });
+                    }
+                });
+            });
+        });
+
+        // Modal interactions
+        const modal = document.getElementById('gallery-modal');
+        const openGalleryBtn = document.getElementById('open-gallery');
+        const closeModalBtn = document.getElementById('close-modal');
+
+        openGalleryBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+        });
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
