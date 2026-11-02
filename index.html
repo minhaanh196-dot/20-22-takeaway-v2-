@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20/22 Takeaway | Triển Lãm Đồ Án Đa Phương Tiện</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="importmap">
+    { "imports": { "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.19/dist/lenis.mjs" } }
+    </script>
+    <style>
+        :root {
+            --background: #05160D;
+            --foreground: #f3f1ea;
+            --surface: #0D3B22;
+            --surface-2: #1E5E3A;
+            --muted: #cbd5e1;
+            --line: rgba(243, 241, 234, 0.18);
+            --line-strong: rgba(243, 241, 234, 0.35);
+            --accent: #1E5E3A;
+            --accent-glow: #2E8B57;
+            --accent-pink: #fbcfe8;
+            --cream: #F3EEE1;
+            --beige: #F7F4E9;
+            --font-display: 'Baloo 2', cursive, sans-serif;
+            --font-sans: 'Inter', sans-serif;
+            --gutter: 3rem;
+            --section: 5rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            background: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        ::selection { background: var(--accent-pink); color: #05160D; }
+
+        /* Preloader */
+        #preloader {
+            position: fixed; inset: 0; z-index: 2000; background: var(--background);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: var(--gutter); transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .preloader-inner {
+            display: flex; justify-content: space-between; align-items: flex-end; width: 100%;
+        }
+        .preloader-brand {
+            font-family: var(--font-display); font-size: 3rem; text-transform: uppercase; line-height: 1; color: var(--foreground);
+        }
+        .preloader-counter {
+            font-family: var(--font-display); font-size: 7.5rem; line-height: 1; color: var(--foreground); font-variant-numeric: tabular-nums;
+        }
+        .preloader-counter span { color: var(--accent-pink); }
+
+        /* SiteNav */
+        .header {
+            position: fixed; inset-inline: 0; top: 0; z-index: 1500; pointer-events: none;
+        }
+        .nav-inner {
+            pointer-events: auto; display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem var(--gutter); background: rgba(5, 22, 13, 0.95); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--line);
+        }
+        .logo-group { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: inherit; }
+        .logo-badge {
+            display: grid; place-items: center; width: 2.3rem; height: 2.3rem; border-radius: 9999px;
+            border: 1px solid var(--line-strong); font-family: var(--font-display); font-weight: 700; background: var(--surface); color: var(--accent-pink);
+        }
+        .logo-text { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+        
+        .nav-links { display: flex; gap: 1rem; list-style: none; align-items: center; flex-wrap: wrap; }
+        .nav-links a {
+            font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--muted); text-decoration: none; transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent-pink); }
+
+        main { position: relative; width: 100%; overflow-x: hidden; }
+
+        /* Hero Section */
+        .hero {
+            position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 100svh;
+            padding: 8rem var(--gutter) 4rem var(--gutter); background: linear-gradient(135deg, #05160D 0%, #0D3B22 60%, #1E5E3A 100%);
+        }
+        .hero-grid {
+            display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; z-index: 20; position: relative; max-width: 1400px; margin: 0 auto; width: 100%;
+        }
+        .hero-text h1 {
+            font-family: var(--font-display); font-size: clamp(3.2rem, 6vw, 6rem); line-height: 1.1; color: #fff;
+        }
+        .hero-text h1 span { color: var(--accent-pink); }
+        .hero-img-box {
+            display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.25);
+            border-radius: 20px; border: 1px solid var(--line); padding: 1rem; backdrop-filter: blur(10px); width: fit-content; margin: 0 auto;
+        }
+        .hero-img-box img {
+            max-width: 100%; max-height: 65vh; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6)); border-radius: 12px; cursor: pointer; transition: transform 0.3s; display: block;
+        }
+        .hero-img-box img:hover { transform: scale(1.02); }
+
+        /* Marquee Section */
+        .marquee-section {
+            overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.8rem 0; background: var(--surface);
+        }
+        .marquee-track { display: flex; width: max-content; animation: marquee 25s linear infinite; }
+        .marquee-item {
+            display: flex; align-items: center; font-family: var(--font-display); font-size: 2.5rem; text-transform: uppercase; letter-spacing: -0.01em; white-space: nowrap; color: #fff;
+        }
+        .marquee-dot { width: 0.6rem; height: 0.6rem; border-radius: 9999px; background: var(--accent-pink); margin-inline: 2rem; }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        section { padding: var(--section) var(--gutter); border-bottom: 1px solid var(--line); background: rgba(13, 59, 34, 0.2); }
+        .section-header { margin-bottom: 3rem; max-width: 1400px; margin-inline: auto; }
+        .eyebrow {
+            display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent-pink); margin-bottom: 0.75rem;
+        }
+        .eyebrow-dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: var(--accent-pink); }
+        .section-title {
+            font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.5rem); text-transform: uppercase; line-height: 1.05; color: #fff;
+        }
+
+        /* Showcase Layout */
+        .showcase-row {
+            display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center;
+            background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 3.5rem; max-width: 1400px; margin: 0 auto;
+        }
+        .showcase-row:nth-child(even) { direction: rtl; }
+        .showcase-row:nth-child(even) > * { direction: ltr; }
+        
+        .content-side h3 {
+            font-family: var(--font-display); font-size: 2.3rem; color: #fff; margin-bottom: 1.2rem; line-height: 1.25;
+        }
+        .content-side p, .content-side li {
+            font-size: 1.2rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.1rem;
+        }
+        .content-side ul { padding-left: 1.5rem; }
+
+        .image-side {
+            display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.25); border-radius: 16px; padding: 1rem; overflow: hidden; border: 1px solid var(--line); width: fit-content; margin: 0 auto;
+        }
+        .image-side img {
+            max-width: 100%; max-height: 550px; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6)); border-radius: 10px; cursor: pointer; transition: transform 0.3s; display: block;
+        }
+        .image-side img:hover { transform: scale(1.02); }
+
+        /* Grid for assets */
+        .grid-assets-container {
+            max-width: 1400px; margin: 0 auto;
+        }
+        .grid-assets { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-top: 2rem; }
+        .asset-card {
+            background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 2rem;
+            display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.3s, border-color 0.3s;
+        }
+        .asset-card:hover { transform: translateY(-5px); border-color: var(--accent-pink); }
+        
+        .ratio-4-5 { width: 100%; aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); border-radius: 14px; margin-bottom: 1.5rem; overflow: hidden; padding: 0.75rem; }
+        .ratio-4-5 img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 12px 25px rgba(0,0,0,0.5)); cursor: pointer; display: block; }
+
+        /* Standee container in Section 8 */
+        .ratio-standee { width: 100%; aspect-ratio: 850/2000; max-height: 650px; display: flex; align-items: center; justify-content: center; background: transparent; border-radius: 14px; margin-bottom: 1.5rem; overflow: hidden; padding: 0.2rem; }
+        .ratio-standee img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 12px 25px rgba(0,0,0,0.5)); cursor: pointer; display: block; }
+
+        /* Section 7.3 & 7.4: Reduced max-height so 100% laptop screen view shows both title and images comfortably without scrolling */
+        .ratio-a5-compact { width: 100%; aspect-ratio: 1/1.414; max-height: 420px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); border-radius: 14px; margin-bottom: 1rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-a5-compact img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); cursor: pointer; display: block; }
+
+        /* Section 11 Mockups: Highlighted frame with thin border, no excess padding */
+        .mockup-item-framed {
+            background: var(--surface); border: 1px solid var(--line-strong); border-radius: 20px; padding: 2rem;
+            display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.3s, border-color 0.3s;
+        }
+        .mockup-item-framed:hover { transform: translateY(-5px); border-color: var(--accent-pink); }
+        .ratio-mockup-tight { width: 100%; aspect-ratio: 16/10; max-height: 480px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); border-radius: 14px; margin-bottom: 1.5rem; overflow: hidden; padding: 0.5rem; }
+        .ratio-mockup-tight img { width: 100%; height: 100%; object-fit: contain; border-radius: 10px; cursor: pointer; display: block; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+
+        .asset-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; white-space: pre-line; line-height: 1.25; }
+        .asset-info { font-size: 1.05rem; color: var(--muted); }
+
+        /* Pinterest Style Masonry / Flex Columns Grid for Section 12 with perfectly aligned bottom */
+        .pinterest-masonry {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+        @media (max-width: 1200px) {
+            .pinterest-masonry { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 900px) {
+            .pinterest-masonry { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .pinterest-masonry { grid-template-columns: 1fr; }
+        }
+        .pinterest-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+            height: 100%;
+        }
+        .pinterest-card:hover { transform: translateY(-5px); border-color: var(--accent-pink); }
+        .pinterest-img-wrap {
+            width: 100%;
+            height: 380px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 14px;
+            padding: 0.75rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .pinterest-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+            cursor: pointer;
+            display: block;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+        }
+
+        #image-modal {
+            position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.92);
+            display: none; justify-content: center; align-items: center; padding: 2rem; backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            position: relative; max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column; align-items: center;
+        }
+        .modal-content img {
+            max-width: 85vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; border-radius: 12px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); background: #111; display: block;
+        }
+        .modal-caption {
+            margin-top: 1.2rem; color: #fff; font-family: var(--font-display); font-size: 1.5rem; text-align: center;
+        }
+        .modal-close {
+            position: absolute; top: -3.5rem; right: 0; background: rgba(255,255,255,0.15); border: none; color: #fff;
+            width: 45px; height: 45px; border-radius: 50%; font-size: 1.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: var(--accent-pink); color: #05160D; }
+
+        footer { padding: var(--section) var(--gutter) 4rem var(--gutter); background: #030d07; border-top: 1px solid var(--line); }
+        .footer-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .footer-left { grid-column: span 12; text-align: center; }
+        .footer-sig { font-family: var(--font-display); font-size: 2.5rem; text-transform: uppercase; line-height: 1; color: #fff; }
+        .footer-copy { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-top: 0.75rem; }
+
+        @media (max-width: 1024px) {
+            .hero-grid, .showcase-row, .footer-grid { grid-template-columns: 1fr; }
+            .hero-text { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-brand">20/22 Takeaway</div>
+            <div class="preloader-counter"><span id="count">0</span>%</div>
+        </div>
+    </div>
+
+    <div id="image-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="close-modal">&times;</button>
+            <img id="modal-img" src="" alt="Zoomed Design">
+            <div class="modal-caption" id="modal-caption">Chi tiết thiết kế</div>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="nav-inner">
+            <a href="#top" class="logo-group">
+                <div class="logo-badge">20</div>
+                <span class="logo-text">Anh tài nhà bên</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#sec-1">Mục 1</a></li>
+                <li><a href="#sec-2">Mục 2</a></li>
+                <li><a href="#sec-3-4">Mục 3&4</a></li>
+                <li><a href="#sec-5">Mục 5</a></li>
+                <li><a href="#sec-6">Mục 6</a></li>
+                <li><a href="#sec-7">Mục 7</a></li>
+                <li><a href="#sec-8">Mục 8</a></li>
+                <li><a href="#sec-9-11">Mục 9-11</a></li>
+                <li><a href="#sec-12">Mục 12</a></li>
+            </ul>
+            <a href="#posts" class="nav-cta">Xem Thiết Kế ↗</a>
+        </div>
+    </header>
+
+    <main id="top">
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <span class="eyebrow"><div class="eyebrow-dot"></div>Đồ Án Cuối Kỳ - Nhóm Anh tài nhà bên</span>
+                    <h1>20/22 Takeaway <span>Báo Cáo & Trưng Bày Đồ Án</span></h1>
+                </div>
+                <div class="hero-img-box">
+                    <img src="assets/images/key-visual.png" alt="Key Visual 20/22 Takeaway" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- Marquee Section -->
+        <div class="marquee-section">
+            <div class="marquee-track">
+                <div class="marquee-item">Key Visual • Bảng Màu • Best Seller<span class="marquee-dot"></span></div>
+                <div class="marquee-item">POSM • Standee • Brochure A5<span class="marquee-dot"></span></div>
+                <div class="marquee-item">Key Visual • Bảng Màu • Best Seller<span class="marquee-dot"></span></div>
+                <div class="marquee-item">POSM • Standee • Brochure A5<span class="marquee-dot"></span></div>
+            </div>
+        </div>
+
+        <!-- ================= MỤC 1 ================= -->
+        <section id="sec-1">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần A - Cơ Sở Lý Thuyết & Định Hướng</div>
+                <h2 class="section-title">1. Tổng Quan Thương Hiệu & Bối Cảnh</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Mô Hình Kinh Doanh & Bối Cảnh Triển Khai</h3>
+                    <p><strong>Mô hình kinh doanh:</strong></p>
+                    <ul>
+                        <li>20/22 Takeaway là mô hình đồ uống mang đi tập trung vào Matcha, Coffee và Milktea, định vị phong cách trẻ trung, tiện lợi tại khu vực học đường.</li>
+                    </ul>
+                    <p style="margin-top: 1.2rem;"><strong>Bối cảnh triển khai:</strong></p>
+                    <ul>
+                        <li>Bối cảnh triển khai: Mạng xã hội và không gian thực tế tại Cơ sở 5 LHU.</li>
+                        <li>Yêu cầu trực quan: Bắt mắt, tối ưu trên di động và thu hút sinh viên trong thời gian ngắn.</li>
+                    </ul>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/key-visual.png" alt="Mục 1: Key Visual" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 2 ================= -->
+        <section id="sec-2">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần A - Cơ Sở Lý Thuyết & Định Hướng</div>
+                <h2 class="section-title">2. Khách Hàng Mục Tiêu Và Insight</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Phân Tích Chân Dung Khách Hàng & Insight</h3>
+                    <ul>
+                        <li><strong>Học sinh, sinh viên:</strong> Ưu tiên giá hợp lý, món dễ chọn, hình ảnh bắt mắt; thường xem nội dung trên điện thoại. <em>Hàm ý thiết kế:</em> Giá 20k–22k phải rõ; tên món ngắn; hình ly là trọng tâm; CTA trực tiếp.</li>
+                        <li><strong>Cư dân lân cận:</strong> Muốn mua nhanh, tiện đường, dễ nhận ra điểm bán. <em>Hàm ý thiết kế:</em> Duy trì nhận diện xe đẩy và dù màu đặc trưng.</li>
+                        <li><strong>Giảng viên, cán bộ nhà trường:</strong> Cần sự tiện lợi và thông tin sản phẩm rõ ràng. <em>Hàm ý thiết kế:</em> Bố cục gọn, hình ảnh sạch sẽ, thông tin nhất quán.</li>
+                    </ul>
+                    <p style="margin-top: 1.2rem;"><strong>Insight định hướng:</strong> <em>“Tôi muốn mua một món uống hợp gu, giá vừa túi tiền và có thể chọn nhanh mà không phải đọc quá nhiều thông tin.”</em></p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/key-visual.png" alt="Mục 2: Key Visual" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 3 & 4 ================= -->
+        <section id="sec-3-4">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần A - Cơ Sở Lý Thuyết & Định Hướng</div>
+                <h2 class="section-title">3 & 4. Định Vị, Thông Điệp, Hệ Thống Màu Sắc & Phong Cách Thị Giác</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Định Vị, Mục Tiêu & Bảng Màu Nhận Diện</h3>
+                    <p><strong>Định vị:</strong> 20/22 Takeaway là điểm mua đồ uống trẻ trung, gần gũi và tiện lợi, cung cấp Matcha – Coffee – Milktea với mức giá phù hợp học sinh, sinh viên (20k-22k).</p>
+                    <p style="margin-top: 1rem;"><strong>Hệ thống màu sắc & vai trò:</strong></p>
+                    <ul>
+                        <li><strong>Kem tươi (#F3EEE1) & Be (#F7F4E9):</strong> Nền trung tính, tạo cảm giác nhẹ và sạch.</li>
+                        <li><strong>Xanh Matcha (#1E5E3A):</strong> Màu nhận diện chủ đạo, liên tưởng đến trà và nguyên liệu.</li>
+                        <li><strong>Đen nhám (#222222) & Nâu cà phê (#5C3A21):</strong> Tăng tương phản, làm nổi bật giá và nhóm cà phê.</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Phong cách tổng thể:</strong> Trẻ trung, thân thiện, có tính thủ công nhưng chỉn chu. Dạng collage/sticker kết hợp ảnh ly thật làm bằng chứng trực quan.</p>
+                </div>
+                <div class="image-side" style="padding: 0.5rem; background: transparent; border: none;">
+                    <img src="assets/images/brand-guideline.png" alt="Mục 3 & 4: Bảng màu & Brand Guideline" class="zoomable" style="max-height: 520px; border-radius: 12px;">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 5 ================= -->
+        <section id="sec-5">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">5. Ý Tưởng Sáng Tạo Và Key Visual (KV)</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Key Visual Xe Đẩy & Dù Xanh Vàng</h3>
+                    <p><strong>Key Visual trung tâm:</strong> Chiếc xe đẩy 20/22 Takeaway được cách điệu theo phong cách collage/sticker. Đây là hình ảnh đại diện cho trải nghiệm mua hàng thật tại điểm bán, đồng thời tạo liên kết giữa quảng cáo trên mạng xã hội và địa điểm thực tế.</p>
+                    <p style="margin-top: 1.2rem;"><strong>Cây dù xanh – vàng:</strong> Chi tiết POSM bổ sung quan trọng giúp tăng khả năng nhận diện từ xa trong không gian ngoài trời tại trường học, giúp khách hàng dễ liên kết giữa quảng cáo và điểm bán thực tế.</p>
+                    <p style="margin-top: 1.2rem;"><strong>Vai trò KV:</strong> KV làm nhiệm vụ nhận diện thương hiệu và tạo bối cảnh; ảnh ly thật, tên món, giá và CTA đảm nhiệm thuyết phục mua hàng.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/key-visual.png" alt="Mục 5: Key Visual" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 6 ================= -->
+        <section id="sec-6">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">6. Bộ Sưu Tập Sản Phẩm Mới – Best Seller Collection</h2>
+            </div>
+            <div class="showcase-row">
+                <div class="content-side">
+                    <h3>Chi Tiết 4 Sản Phẩm Best Seller</h3>
+                    <ul>
+                        <li><strong>Trà sữa Thái đỏ (22k):</strong> Món có sắc đỏ nổi bật, tạo điểm nhấn màu trong bộ sưu tập. Màu trà rõ, bề mặt ly sạch, không garnish thừa.</li>
+                        <li><strong>Trà bưởi hoa đào (20k):</strong> Lựa chọn trà trái cây tươi và nhẹ, làm nổi sắc trà và cảm giác thanh mát.</li>
+                        <li><strong>Houjicha sữa hạt (22k):</strong> Đại diện nhóm trà rang và vị sữa hạt, nhấn sắc nâu/trà rang tạo cảm giác dịu.</li>
+                        <li><strong>Matcha Latte (20k):</strong> Món đại diện nhận diện xanh Matcha, giữ màu matcha chân thực và lớp sữa mịn.</li>
+                    </ul>
+                    <p style="margin-top: 1.2rem;"><strong>Nguyên tắc:</strong> Sử dụng hình ảnh ly thật làm nguồn chính, không tự ý đổi form ly, màu thức uống hoặc nắp.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/post-best-seller.png" alt="Mục 6: Best Seller Collection" class="zoomable">
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 7 ================= -->
+        <section id="sec-7">
+            <div class="section-header" id="posts">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">7. Phân Tích Từng Ấn Phẩm Quảng Cáo</h2>
+            </div>
+            
+            <div class="grid-assets-container" style="margin-bottom: 3rem;">
+                <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #fff; margin-bottom: 1.5rem;">7.1 & 7.2. Social Posts (Tỷ lệ 4:5)</h3>
+                <div class="grid-assets">
+                    <div class="asset-card">
+                        <div class="ratio-4-5"><img src="assets/images/post-best-seller.png" alt="Post Best Seller" class="zoomable"></div>
+                        <div class="asset-name">Post Best Seller&#10;Collection</div>
+                        <div class="asset-info">Trưng bày 4 món chủ lực cùng mức giá</div>
+                    </div>
+                    <div class="asset-card">
+                        <div class="ratio-4-5"><img src="assets/images/post-matcha-latte.png" alt="Post Matcha Latte" class="zoomable"></div>
+                        <div class="asset-name">Post Matcha&#10;Latte (20k)</div>
+                        <div class="asset-info">Đại diện nhận diện xanh Matcha</div>
+                    </div>
+                    <div class="asset-card">
+                        <div class="ratio-4-5"><img src="assets/images/post-houjicha.png" alt="Post Houjicha" class="zoomable"></div>
+                        <div class="asset-name">Post Houjicha&#10;Sữa Hạt (22k)</div>
+                        <div class="asset-info">Nhấn mạnh dòng trà rang ấm áp</div>
+                    </div>
+                    <div class="asset-card">
+                        <div class="ratio-4-5"><img src="assets/images/post-tra-buoi-hoa-dao.png" alt="Post Trà Bưởi" class="zoomable"></div>
+                        <div class="asset-name">Post Trà Bưởi&#10;Hoa Đào (20k)</div>
+                        <div class="asset-info">Trà trái cây tươi thanh mát</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7.3 & 7.4: Compact height so 100% laptop view shows title and images cleanly -->
+            <div class="grid-assets-container">
+                <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #fff; margin-bottom: 1.5rem;">7.3 & 7.4. Story Ads & Brochure Menu A5</h3>
+                <div class="grid-assets" style="grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));">
+                    <div class="asset-card" style="padding: 2rem;">
+                        <div class="ratio-a5-compact"><img src="assets/images/brochure-a5.png" alt="Brochure A5" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.6rem; margin-top: 0.8rem;">Brochure Menu A5</div>
+                        <div class="asset-info" style="font-size: 1.1rem;">Hỗ trợ khách chọn món nhanh chóng tại xe</div>
+                    </div>
+                    <div class="asset-card" style="padding: 2rem;">
+                        <div class="ratio-a5-compact"><img src="assets/images/story-ads.png" alt="Story Ads 9:16" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.6rem; margin-top: 0.8rem;">Story Ads (9:16)</div>
+                        <div class="asset-info" style="font-size: 1.1rem;">Thu hút nhanh trên màn hình di động</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 8 ================= -->
+        <section id="sec-8">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">8. POSM Tại Điểm Bán: Xe 20/22 Và Cây Dù Xanh – Vàng</h2>
+            </div>
+            
+            <div class="grid-assets-container">
+                <div class="grid-assets" style="grid-template-columns: repeat(5, minmax(0, 1fr));">
+                    <div class="asset-card" style="padding: 1rem; background: transparent; border: none;">
+                        <div class="ratio-standee"><img src="assets/images/banner-standee-best-seller.png" alt="Standee Best Seller" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.1rem;">Collection</div>
+                        <div class="asset-info" style="font-size: 0.85rem;">Standee tổng hợp best seller</div>
+                    </div>
+                    <div class="asset-card" style="padding: 1rem; background: transparent; border: none;">
+                        <div class="ratio-standee"><img src="assets/images/banner-standee-tra-sua-thai-do.png" alt="Standee Trà Sữa Thái Đỏ" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.1rem;">Trà sữa&#10;Thái đỏ</div>
+                        <div class="asset-info" style="font-size: 0.85rem;">Standee món trà sữa Thái đỏ</div>
+                    </div>
+                    <div class="asset-card" style="padding: 1rem; background: transparent; border: none;">
+                        <div class="ratio-standee"><img src="assets/images/banner-standee-tra-buoi-hoa-dao.png" alt="Standee Trà Bưởi Hoa Đào" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.1rem;">Trà bưởi&#10;hoa đào</div>
+                        <div class="asset-info" style="font-size: 0.85rem;">Standee món trà bưởi hoa đào</div>
+                    </div>
+                    <div class="asset-card" style="padding: 1rem; background: transparent; border: none;">
+                        <div class="ratio-standee"><img src="assets/images/banner-standee-houjicha.png" alt="Standee Houjicha" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.1rem;">Houjicha&#10;sữa hạt</div>
+                        <div class="asset-info" style="font-size: 0.85rem;">Standee món houjicha sữa hạt</div>
+                    </div>
+                    <div class="asset-card" style="padding: 1rem; background: transparent; border: none;">
+                        <div class="ratio-standee"><img src="assets/images/banner-standee-matcha-latte.png" alt="Standee Matcha Latte" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.1rem;">Matcha&#10;Latte</div>
+                        <div class="asset-info" style="font-size: 0.85rem;">Standee món matcha latte</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 9, 10 & 11 ================= -->
+        <section id="sec-9-11">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">9, 10 & 11. Triển Khai Đa Kênh, Đánh Giá Hiệu Quả & Mockup Thực Tế</h2>
+            </div>
+            
+            <div class="showcase-row" style="margin-bottom: 3rem;">
+                <div class="content-side">
+                    <h3>9 & 10. Hành Trình Khách Hàng & Đánh Giá</h3>
+                    <p><strong>Hành trình đề xuất:</strong> Nhìn bài quảng cáo &rarr; ghi nhớ món và giá &rarr; nhận ra xe 20/22 cùng cây dù xanh vàng &rarr; xem brochure tại điểm bán &rarr; chọn món và mua.</p>
+                    <p style="margin-top: 1rem;"><strong>Tiêu chí đánh giá hiệu quả:</strong> Nhận diện thương hiệu, khả năng đọc thông tin, tính chân thực sản phẩm, tính đồng bộ và khả năng chuyển đổi hành vi.</p>
+                </div>
+                <div class="image-side">
+                    <img src="assets/images/poster-best-seller-a4.png" alt="Poster A4" class="zoomable">
+                </div>
+            </div>
+
+            <!-- Section 11 Mockups: Highlighted frame, tight padding, no excess margin -->
+            <div class="grid-assets-container">
+                <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #fff; margin-bottom: 1.5rem;">11. Mockup Thực Tế Tại Cơ Sở 5 LHU</h3>
+                <div class="grid-assets" style="grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 3rem;">
+                    <div class="mockup-item-framed">
+                        <div class="ratio-mockup-tight"><img src="assets/images/mockup-standee-xe-day-1.jpg" alt="Mockup Xe Day 1" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.8rem; margin-top: 0.5rem;">Mockup Xe Đẩy - Ngày 1</div>
+                        <div class="asset-info" style="font-size: 1.2rem;">Không gian phục vụ thực tế tại LHU</div>
+                    </div>
+                    <div class="mockup-item-framed">
+                        <div class="ratio-mockup-tight"><img src="assets/images/mockup-standee-xe-day-2.jpg" alt="Mockup Xe Day 2" class="zoomable"></div>
+                        <div class="asset-name" style="font-size: 1.8rem; margin-top: 0.5rem;">Mockup Xe Đẩy - Ngày 2</div>
+                        <div class="asset-info" style="font-size: 1.2rem;">Góc nhìn nhận diện từ xa với cây dù xanh vàng</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 12 ================= -->
+        <section id="sec-12">
+            <div class="section-header">
+                <div class="eyebrow"><div class="eyebrow-dot"></div>Phần B - Sản Phẩm Quảng Cáo Và Triển Khai Thực Tế</div>
+                <h2 class="section-title">12. Tổng Toàn Bộ Thiết Kế</h2>
+            </div>
+            <div class="pinterest-masonry">
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/key-visual.png" alt="Key Visual" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Key Visual&#10;Tổng Thể</div>
+                        <div class="asset-info">Phong cách collage/sticker nhận diện</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/post-best-seller.png" alt="Post Best Seller" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Post Best Seller&#10;Collection</div>
+                        <div class="asset-info">Bộ sưu tập 4 món chủ lực</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/post-matcha-latte.png" alt="Matcha Latte" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Post Matcha&#10;Latte (20k)</div>
+                        <div class="asset-info">Ấn phẩm quảng cáo đơn món</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/post-houjicha.png" alt="Houjicha" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Post Houjicha&#10;Sữa Hạt (22k)</div>
+                        <div class="asset-info">Ấn phẩm quảng cáo đơn món</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/post-tra-buoi-hoa-dao.png" alt="Tra Buoi" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Post Trà Bưởi&#10;Hoa Đào (20k)</div>
+                        <div class="asset-info">Ấn phẩm quảng cáo đơn món</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/post-tra-sua-thai-do.png" alt="Thai Do" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Post Trà Sữa&#10;Thái Đỏ (22k)</div>
+                        <div class="asset-info">Ấn phẩm quảng cáo đơn món</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/brochure-a5.png" alt="Brochure A5" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Brochure&#10;Menu A5</div>
+                        <div class="asset-info">Ấn phẩm menu tại điểm bán</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/story-ads.png" alt="Story Ads" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Story Ads&#10;(9:16)</div>
+                        <div class="asset-info">Quảng cáo định dạng dọc di động</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/banner-standee-best-seller.png" alt="Standee Collection" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Standee&#10;Collection</div>
+                        <div class="asset-info">POSM tại điểm bán</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/banner-standee-tra-sua-thai-do.png" alt="Standee Thai Do" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Standee Trà Sữa&#10;Thái Đỏ</div>
+                        <div class="asset-info">POSM tại điểm bán</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/banner-standee-tra-buoi-hoa-dao.png" alt="Standee Tra Buoi" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Standee Trà Bưởi&#10;Hoa Đào</div>
+                        <div class="asset-info">POSM tại điểm bán</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/banner-standee-houjicha.png" alt="Standee Houjicha" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Standee Houjicha&#10;Sữa Hạt</div>
+                        <div class="asset-info">POSM tại điểm bán</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/banner-standee-matcha-latte.png" alt="Standee Matcha" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Standee Matcha&#10;Latte</div>
+                        <div class="asset-info">POSM tại điểm bán</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/poster-best-seller-a4.png" alt="Poster A4" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Poster A4&#10;Best Seller</div>
+                        <div class="asset-info">Ấn phẩm truyền thông điểm bán</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/mockup-standee-xe-day-1.jpg" alt="Mockup 1" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Mockup Thực Tế&#10;Ngày 1</div>
+                        <div class="asset-info">Không gian phục vụ tại LHU</div>
+                    </div>
+                </div>
+                <div class="pinterest-card">
+                    <div class="pinterest-img-wrap"><img src="assets/images/mockup-standee-xe-day-2.jpg" alt="Mockup 2" class="zoomable"></div>
+                    <div>
+                        <div class="asset-name">Mockup Thực Tế&#10;Ngày 2</div>
+                        <div class="asset-info">Góc nhìn nhận diện từ xa</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-left">
+                <div class="footer-sig">20/22 Takeaway - Nhóm Anh tài nhà bên</div>
+                <div class="footer-copy">Giảng viên hướng dẫn: Nguyễn Lê Anh Thi | Đồ án cuối kỳ Truyền thông Đa phương tiện</div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
